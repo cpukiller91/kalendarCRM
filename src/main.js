@@ -7,11 +7,11 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import './styles/app.scss'
 
 import fr from './locales/fr'
-import en from './locales/en'
+import en from './locales/ru'
 import de from './locales/de'
 import ca from './locales/ca'
 import nl from './locales/nl'
-import ru from './locales/ru'
+import ru from './locales/en'
 
 
 import {

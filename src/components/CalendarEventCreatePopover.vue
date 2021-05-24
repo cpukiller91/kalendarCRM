@@ -9,17 +9,17 @@
             <v-toolbar-title slot="extension">
 
                 <v-text-field single-line hide-details solo flat autofocus
-                              :label="labels.title"
-                              v-model="details.title"
-                ></v-text-field>
+                    :label="labels.title"
+                    v-model="details.title">
+                </v-text-field>
 
             </v-toolbar-title>
-
+            <!--Button edit--->
             <v-btn
-                    v-if="!details.readonly"
-                    color="secondary"
-                    small absolute bottom left fab icon
-                    @click="edit" style="background-color: #424242!important; color: #fff!important;">
+                v-if="!details.readonly"
+                color="secondary"
+                small absolute bottom left fab icon
+                @click="edit" style="background-color: #424242!important; color: #fff!important;">
                 <v-icon>{{ icons.edit }}</v-icon>
             </v-btn>
 
@@ -32,14 +32,14 @@
             <slot name="eventCreatePopoverToolbarSave" v-bind="slotData">
 
                 <v-btn
-                        class="ds-create-popover-save"
-                        text
-                        :disabled="!isValid"
-                        :style="styleText"
-                        @click="save">
+                  class="ds-create-popover-save"
+                  text
+                  :disabled="!isValid"
+                  :style="styleText"
+                  @click="save">
 
-                    <v-icon left>{{ icons.save }}</v-icon>
-                    <span>{{ labels.save }}</span>
+                  <v-icon left>{{ icons.save }}</v-icon>
+                  <span>{{ labels.save }}</span>
 
                 </v-btn>
 
@@ -151,58 +151,61 @@
                 </v-list-item>
 
                 <v-list-item v-if="prompts.icon && $dayspan.supports.icon">
-                    <v-list-item-avatar>
-                        <!-- <v-icon>{{ details.icon || 'help' }}</v-icon> -->
-                         <v-icon>coronavirus</v-icon>
-                    </v-list-item-avatar>
-                    <v-list-item-content class="py-0">
-                        <slot name="eventCreatePopoverIcon" v-bind="slotData">
 
-                            <v-select
-                                    single-line hide-details solo flat full-width
-                                    :items="$dayspan.icons"
-                                    v-model="details.icon"
-                                    v-on:change="onChangeIcon">
-                                <template slot="item" slot-scope="{ item }">
-                                    <v-list-item-avatar>
-                                        <v-icon>{{ item.value }}</v-icon>
-                                    </v-list-item-avatar>
-                                    <v-list-item-content>
-                                        {{ item.text }}
-                                    </v-list-item-content>
-                                </template>
-                            </v-select>
+                  <v-list-item-avatar>
+                    <!--<v-icon>{{ details.icon || 'help' }}</v-icon>-->
+                   <v-icon>coronavirus</v-icon>
+                  </v-list-item-avatar>
 
-                        </slot>
-                    </v-list-item-content>
-                </v-list-item>
+                  <v-list-item-content class="py-0">
+                       <slot name="eventCreatePopoverIcon" v-bind="slotData">
 
-                <v-list-item v-if="prompts.busy && $dayspan.supports.busy">
-                    <v-list-item-avatar>
-                        <v-icon>work</v-icon>
-                    </v-list-item-avatar>
-                    <v-list-item-content class="py-0">
-                        <slot name="eventCreatePopoverBusy" v-bind="slotData">
+                           <v-select
+                                   single-line hide-details solo flat full-width
+                                   :items="$dayspan.icons"
+                                   v-model="details.icon"
+                                   v-on:change="onChangeIcon">
+                               <template slot="item" slot-scope="{ item }">
+                                   <v-list-item-avatar>
+                                       <v-icon>{{ item.value }}</v-icon>
+                                   </v-list-item-avatar>
+                                   <v-list-item-content>
+                                       {{ item.text }}
+                                   </v-list-item-content>
+                               </template>
+                           </v-select>
 
-                            <v-select
-                                    single-line hide-details solo flat full-width
-                                    :items="busyOptions"
-                                    v-model="details.busy"
-                            ></v-select>
+                       </slot>
+                  </v-list-item-content>
 
-                        </slot>
-                    </v-list-item-content>
-                </v-list-item>
+             </v-list-item>
 
-            </v-list>
+             <v-list-item v-if="prompts.busy && $dayspan.supports.busy">
+                 <v-list-item-avatar>
+                     <v-icon>work</v-icon>
+                 </v-list-item-avatar>
+                 <v-list-item-content class="py-0">
+                     <slot name="eventCreatePopoverBusy" v-bind="slotData">
 
-            <slot name="eventCreatePopoverBodyBottom" v-bind="slotData"></slot>
+                         <v-select
+                                 single-line hide-details solo flat full-width
+                                 :items="busyOptions"
+                                 v-model="details.busy"
+                         ></v-select>
 
-        </v-card-text>
+                     </slot>
+                 </v-list-item-content>
+             </v-list-item>
 
-        <slot name="eventCreatePopoverActions" v-bind="slotData"></slot>
+         </v-list>
 
-    </v-card>
+         <slot name="eventCreatePopoverBodyBottom" v-bind="slotData"></slot>
+
+     </v-card-text>
+
+     <slot name="eventCreatePopoverActions" v-bind="slotData"></slot>
+
+ </v-card>
 
 </template>
 
@@ -211,316 +214,316 @@ import { CalendarEvent, Calendar, Pattern, Functions as fn } from 'custom-dayspa
 
 export default {
 
-    name: 'dsCalendarEventCreatePopover',
+ name: 'dsCalendarEventCreatePopover',
 
-    props:
-        {
-            calendarEvent:
-                {
-                    required: true,
-                    type: CalendarEvent
-                },
+ props:
+     {
+         calendarEvent:
+             {
+                 required: true,
+                 type: CalendarEvent
+             },
 
-            calendar:
-                {
-                    required: true,
-                    type: Calendar
-                },
+         calendar:
+             {
+                 required: true,
+                 type: Calendar
+             },
 
-            close:
-                {
-                    type: Function
-                },
+         close:
+             {
+                 type: Function
+             },
 
-            formats:
-                {
-                    validate (x) {
-                        return this.$dsValidate(x, 'formats')
-                    },
-                    default () {
-                        return this.$dsDefaults().formats
-                    }
-                },
+         formats:
+             {
+                 validate (x) {
+                     return this.$dsValidate(x, 'formats')
+                 },
+                 default () {
+                     return this.$dsDefaults().formats
+                 }
+             },
 
-            icons:
-                {
-                    validate (x) {
-                        return this.$dsValidate(x, 'icons')
-                    },
-                    default () {
-                        return this.$dsDefaults().icons
-                    }
-                },
+         icons:
+             {
+                 validate (x) {
+                     return this.$dsValidate(x, 'icons')
+                 },
+                 default () {
+                     return this.$dsDefaults().icons
+                 }
+             },
 
-            labels:
-                {
-                    validate (x) {
-                        return this.$dsValidate(x, 'labels')
-                    },
-                    default () {
-                        return this.$dsDefaults().labels
-                    }
-                },
+         labels:
+             {
+                 validate (x) {
+                     return this.$dsValidate(x, 'labels')
+                 },
+                 default () {
+                     return this.$dsDefaults().labels
+                 }
+             },
 
-            prompts:
-                {
-                    validate (x) {
-                        return this.$dsValidate(x, 'prompts')
-                    },
-                    default () {
-                        return this.$dsDefaults().prompts
-                    }
-                },
+         prompts:
+             {
+                 validate (x) {
+                     return this.$dsValidate(x, 'prompts')
+                 },
+                 default () {
+                     return this.$dsDefaults().prompts
+                 }
+             },
 
-            busyOptions:
-                {
-                    type: Array,
-                    default () {
-                        return this.$dsDefaults().busyOptions
-                    }
-                }
-        },
+         busyOptions:
+             {
+                 type: Array,
+                 default () {
+                     return this.$dsDefaults().busyOptions
+                 }
+             }
+     },
 
-    computed:
-        {
-            slotData () {
-                return {
-                    calendarEvent: this.calendarEvent,
-                    calendar: this.calendar,
-                    close: this.close,
-                    details: this.details
-                }
-            },
+ computed:
+     {
+         slotData () {
+             return {
+                 calendarEvent: this.calendarEvent,
+                 calendar: this.calendar,
+                 close: this.close,
+                 details: this.details
+             }
+         },
 
-            classes () {
-                return {
-                    'ds-event-cancelled': this.calendarEvent.cancelled
-                }
-            },
+         classes () {
+             return {
+                 'ds-event-cancelled': this.calendarEvent.cancelled
+             }
+         },
 
-            styleHeader () {
-                return {
-                    backgroundColor: this.details.color,
-                    color: this.details.forecolor
-                }
-            },
+         styleHeader () {
+             return {
+                 backgroundColor: this.details.color,
+                 color: this.details.forecolor
+             }
+         },
 
-            styleText () {
-                return {
-                    color: this.details.forecolor
-                }
-            },
+         styleText () {
+             return {
+                 color: this.details.forecolor
+             }
+         },
 
-            startDate () {
-                return this.calendarEvent.start.format(this.formats.start)
-            },
+         startDate () {
+             return this.calendarEvent.start.format(this.formats.start)
+         },
 
-            busyness () {
-                return this.details.busy ? this.labels.busy : this.labels.free
-            },
+         busyness () {
+             return this.details.busy ? this.labels.busy : this.labels.free
+         },
 
-            isValid () {
-                return this.$dayspan.isValidEvent(
-                    this.details,
-                    this.calendarEvent.schedule,
-                    this.calendarEvent
-                )
-            },
+         isValid () {
+             return this.$dayspan.isValidEvent(
+                 this.details,
+                 this.calendarEvent.schedule,
+                 this.calendarEvent
+             )
+         },
 
-            occurs () {
-                return this.$dayspan.getEventOccurrence(
-                    this.calendarEvent.schedule,
-                    this.calendarEvent.start,
-                    this.labels,
-                    this.formats
-                )
-            }
-        },
+         occurs () {
+             return this.$dayspan.getEventOccurrence(
+                 this.calendarEvent.schedule,
+                 this.calendarEvent.start,
+                 this.labels,
+                 this.formats
+             )
+         }
+     },
 
-    data: vm => ({
-        details: vm.buildDetails()
-    }),
-    mounted (){
-        // Set default duration to be consistent with default icon selection for virus
-        this.calendarEvent.fullDay = false
-        this.calendarEvent.schedule.durationUnit = "hour"
-        this.calendarEvent.schedule.duration = 1
-        this.calendarEvent.schedule.times = [1]
-    },
-    methods:
-        {
-            onChangeIcon (){
-              switch (this.details.icon) {
-                case 'virus':
-                    this.calendarEvent.schedule.durationUnit = "hour"
-                    this.calendarEvent.schedule.duration = 1
-                    this.calendarEvent.schedule.times = [1]
-                    this.details.color = "#F44336"
-                    break
-                case 'bacteria':
-                    this.calendarEvent.schedule.durationUnit = "hour"
-                    this.calendarEvent.schedule.duration = 4
-                    this.calendarEvent.schedule.times = [1]
-                    this.details.color = "#607D8B"
-                    break
-                case 'continu_virus':
-                    this.calendarEvent.schedule.durationUnit = "day"
-                    this.calendarEvent.schedule.duration = 1
-                    this.calendarEvent.schedule.times = []
-                    this.details.color = "#FFEB3B"
-                    break
-                case 'continu_bacteria':
-                    this.calendarEvent.schedule.durationUnit = "day"
-                    this.calendarEvent.schedule.duration = 1
-                    this.calendarEvent.schedule.times = []
-                    this.details.color = "#00BCD4"
-                    break
-              }
-            },
-            edit () {
-                var ev = this.getEvent('create-edit')
+ data: vm => ({
+     details: vm.buildDetails()
+ }),
+ mounted (){
+     // Set default duration to be consistent with default icon selection for virus
+     this.calendarEvent.fullDay = false
+     this.calendarEvent.schedule.durationUnit = "day"
+     this.calendarEvent.schedule.duration = 1
+     this.calendarEvent.schedule.times = []
+ },
+ methods:
+     {
+         onChangeIcon (){
+           switch (this.details.icon) {
+             case 'virus':
+                 this.calendarEvent.schedule.durationUnit = "day"
+                 this.calendarEvent.schedule.duration = 1
+                 this.calendarEvent.schedule.times = []
+                 this.details.color = "#F44336"
+                 break
+             case 'bacteria':
+                 this.calendarEvent.schedule.durationUnit = "day"
+                 this.calendarEvent.schedule.duration = 1
+                 this.calendarEvent.schedule.times = []
+                 this.details.color = "#607D8B"
+                 break
+             case 'continu_virus':
+                 this.calendarEvent.schedule.durationUnit = "day"
+                 this.calendarEvent.schedule.duration = 1
+                 this.calendarEvent.schedule.times = []
+                 this.details.color = "#FFEB3B"
+                 break
+             case 'continu_bacteria':
+                 this.calendarEvent.schedule.durationUnit = "day"
+                 this.calendarEvent.schedule.duration = 1
+                 this.calendarEvent.schedule.times = []
+                 this.details.color = "#00BCD4"
+                 break
+           }
+         },
+         edit () {
+             var ev = this.getEvent('create-edit')
 
-                this.$emit('create-edit', ev)
+             this.$emit('create-edit', ev)
 
-                this.finishEvent(ev)
-            },
+             this.finishEvent(ev)
+         },
 
-            save () {
-                let ev = this.getEvent('creating')
+         save () {
+             let ev = this.getEvent('creating')
 
-                this.$emit('creating', ev)
+             this.$emit('creating', ev)
 
-                if (!ev.handled && ev.details && ev.calendarEvent) {
-                    ev.created = ev.calendarEvent.event
+             if (!ev.handled && ev.details && ev.calendarEvent) {
+                 ev.created = ev.calendarEvent.event
 
-                    this.$dayspan.setEventDetails(
-                        ev.details,
-                        ev.created.data,
-                        ev.created,
-                        ev.calendarEvent
-                    )
+                 this.$dayspan.setEventDetails(
+                     ev.details,
+                     ev.created.data,
+                     ev.created,
+                     ev.calendarEvent
+                 )
 
-                    if (ev.calendar) {
-                        ev.calendar.addEvent(ev.created)
-                        ev.added = true
-                    }
+                 if (ev.calendar) {
+                     ev.calendar.addEvent(ev.created)
+                     ev.added = true
+                 }
 
-                    this.$emit('created', ev)
+                 this.$emit('created', ev)
 
-                    if (ev.calendar && ev.refresh) {
-                        ev.calendar.refreshEvents()
-                    }
+                 if (ev.calendar && ev.refresh) {
+                     ev.calendar.refreshEvents()
+                 }
 
-                    ev.handled = true
+                 ev.handled = true
 
-                    this.$emit('event-create', ev.created)
-                }
+                 this.$emit('event-create', ev.created)
+             }
 
-                this.finishEvent(ev)
-            },
+             this.finishEvent(ev)
+         },
 
-            finishEvent (ev) {
-                if (ev.close) {
-                    this.close()
+         finishEvent (ev) {
+             if (ev.close) {
+                 this.close()
 
-                    this.$emit('create-popover-closed', ev)
-                }
-            },
+                 this.$emit('create-popover-closed', ev)
+             }
+         },
 
-            buildDetails () {
-                let details = this.$dayspan.copyEventDetails(this.calendarEvent.event.data)
+         buildDetails () {
+             let details = this.$dayspan.copyEventDetails(this.calendarEvent.event.data)
 
-                // details.title = ''
+             // details.title = ''
 
-                return details
-            },
+             return details
+         },
 
-            getEvent (type, extra = {}) {
-                return fn.extend({
+         getEvent (type, extra = {}) {
+             return fn.extend({
 
-                    type: type,
-                    calendarEvent: this.calendarEvent,
-                    calendar: this.calendar,
-                    close: this.close,
-                    details: this.details,
-                    handled: false,
-                    added: false,
-                    refresh: true,
-                    close: true,
-                    $vm: this,
-                    $element: this.$el
+                 type: type,
+                 calendarEvent: this.calendarEvent,
+                 calendar: this.calendar,
+                 close: this.close,
+                 details: this.details,
+                 handled: false,
+                 added: false,
+                 refresh: true,
+                 close: true,
+                 $vm: this,
+                 $element: this.$el
 
-                }, extra)
-            }
-        }
+             }, extra)
+         }
+     }
 }
 </script>
 
 <style scoped lang="scss">
 
-    .v-btn--floating.v-btn--left {
-        margin-left: 0px !important;
+ .v-btn--floating.v-btn--left {
+     margin-left: 0px !important;
 
-        .v-icon {
-            height: auto;
-        }
-    }
+     .v-icon {
+         height: auto;
+     }
+ }
 
-    .ds-calendar-event-popover-card {
+ .ds-calendar-event-popover-card {
 
-        .v-toolbar__extension {
-            padding: 0 16px !important;
-            height: 60px !important;
-            align-items: start;
+     .v-toolbar__extension {
+         padding: 0 16px !important;
+         height: 60px !important;
+         align-items: start;
 
-            .v-toolbar__title {
-                width: 100%;
-                margin-left: 56px;
-                margin-right: 0px;
+         .v-toolbar__title {
+             width: 100%;
+             margin-left: 56px;
+             margin-right: 0px;
 
-                .v-input__slot {
-                    background-color: rgba(255, 255, 255, 0.2) !important;
+             .v-input__slot {
+                 background-color: rgba(255, 255, 255, 0.2) !important;
 
-                    input {
-                        caret-color: rgba(0, 0, 0, .87) !important;
-                    }
-                }
-            }
-        }
-    }
+                 input {
+                     caret-color: rgba(0, 0, 0, .87) !important;
+                 }
+             }
+         }
+     }
+ }
 
-    .v-text-field--full-width {
-        width: 100%;
-    }
+ .v-text-field--full-width {
+     width: 100%;
+ }
 
-    .v-card__text {
-        padding: 16px 0;
+ .v-card__text {
+     padding: 16px 0;
 
-        .v-list {
-            padding-bottom: 0px;
+     .v-list {
+         padding-bottom: 0px;
 
-            > div:first-child {
-                margin-bottom: 1em;
-            }
+         > div:first-child {
+             margin-bottom: 1em;
+         }
 
-            .v-list__tile {
-                height: auto !important;
-            }
-        }
-    }
+         .v-list__tile {
+             height: auto !important;
+         }
+     }
+ }
 
-    .ds-create-popover-save {
-        background-color: transparent !important;
-    }
+ .ds-create-popover-save {
+     background-color: transparent !important;
+ }
 
-    .ds-color-option {
-        width: 100%;
-        color: white;
-        padding: 4px;
-    }
+ .ds-color-option {
+     width: 100%;
+     color: white;
+     padding: 4px;
+ }
 
-    .v-input {
-        margin-bottom: 8px !important;
-    }
+ .v-input {
+     margin-bottom: 8px !important;
+ }
 
 </style>

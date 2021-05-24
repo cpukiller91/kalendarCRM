@@ -1,5 +1,6 @@
 <template>
   <div class="ds-expand ds-calendar-app">
+
     <v-navigation-drawer fixed app v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp">
       <slot name="drawerTop"></slot>
 
@@ -8,8 +9,9 @@
           <ds-day-picker :span="calendar.span" @picked="rebuild"></ds-day-picker>
         </div>
       </slot>
-
+      <!--
       <slot name="drawerBottom"></slot>
+-->
     </v-navigation-drawer>
 
     <v-app-bar
@@ -27,6 +29,7 @@
             <v-icon>mdi-menu</v-icon>
           </v-btn>
         </slot>
+
         <span class="hidden-sm-and-down">
           <slot name="title" :calendar="calendar"></slot>
         </span>
@@ -111,6 +114,8 @@
 
       <slot name="menuRight"></slot>
     </v-app-bar>
+
+
     <v-main class="ds-expand">
       <v-container fluid fill-height class="ds-calendar-container">
         <ds-gestures @swipeleft="next" @swiperight="prev">

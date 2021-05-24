@@ -119,7 +119,9 @@
                 </v-list-item>
 
                 <v-list-item v-if="details.icon">
-                    <v-list-item-avatar>
+
+                  <!--
+                  <v-list-item-avatar>
                         <v-icon>coronavirus</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content>
@@ -129,6 +131,7 @@
                             </v-list-item-title>
                         </slot>
                     </v-list-item-content>
+                   -->
                 </v-list-item>
 
                 <v-list-item v-if="details.calendar">

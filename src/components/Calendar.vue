@@ -1,6 +1,5 @@
 <template>
     <div class="ds-calendar">
-
         <div v-if="isYear" class="ds-month-view ds-year-view">
 
             <ds-weeks-view class="ds-expand"

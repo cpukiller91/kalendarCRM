@@ -87,7 +87,7 @@ export default {
         calendar: Calendar.months(),
         readOnly: false,
         nav: true,
-        currentLocale: "ru",
+        currentLocale: vm.$dayspan.currentLocale,
         locales: [
             {value: 'ru', text: 'Русский'},
             {value: 'en', text: 'English'},

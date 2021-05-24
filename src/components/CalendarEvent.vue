@@ -1,4 +1,5 @@
 <template>
+  <!--Event item calendar-->
     <div class="ds-calendar-event-menu">
         <v-menu
                 :content-class="contentClass"
