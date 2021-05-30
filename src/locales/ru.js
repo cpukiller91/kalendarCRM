@@ -175,7 +175,7 @@ export default {
         },
         dsEvent: {
             labels: {
-                moreActions: 'Больше действий...',
+                moreActions: '...',
                 cancel: 'Отменить изменения мероприятия',
                 save: 'Сохранить',
                 title: 'Заголовок',

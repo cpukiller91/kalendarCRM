@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "psihologs",
+  "info": {
+    "name": "Psiholog",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "emotionalcondition": {
+      "type": "string"
+    },
+    "motivationalsphere": {
+      "type": "string"
+    },
+    "socialcontacts": {
+      "type": "string"
+    },
+    "dopolstesor": {
+      "type": "string"
+    },
+    "nspecificdifficulties": {
+      "type": "string"
+    },
+    "specificdifficulties": {
+      "type": "string"
+    },
+    "directionsrehabilitation": {
+      "type": "string"
+    },
+    "formofwork": {
+      "type": "string"
+    },
+    "parentingattitude": {
+      "type": "string"
+    },
+    "babycard": {
+      "via": "psihologs",
+      "model": "babycard"
+    },
+    "actualtrabl": {
+      "type": "string"
+    }
+  }
+}

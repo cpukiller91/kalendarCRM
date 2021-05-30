@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "usergroups",
+  "info": {
+    "name": "usergroup",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "readOnly": {
+      "type": "boolean"
+    },
+    "color": {
+      "type": "string"
+    },
+    "card": {
+      "type": "boolean"
+    },
+    "defect": {
+      "type": "boolean"
+    },
+    "logos": {
+      "type": "boolean"
+    },
+    "psiho": {
+      "type": "boolean"
+    },
+    "famili": {
+      "type": "boolean"
+    }
+  }
+}

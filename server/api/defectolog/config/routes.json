@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/defectologs",
+      "handler": "defectolog.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/defectologs/count",
+      "handler": "defectolog.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/defectologs/:id",
+      "handler": "defectolog.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/defectologs",
+      "handler": "defectolog.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/defectologs/:id",
+      "handler": "defectolog.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/defectologs/:id",
+      "handler": "defectolog.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

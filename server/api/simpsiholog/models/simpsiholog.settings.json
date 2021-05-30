@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "simpsihologs",
+  "info": {
+    "name": "Simpsiholog",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "agecategory": {
+      "type": "string"
+    },
+    "babycard": {
+      "via": "simpsihologs",
+      "model": "babycard"
+    },
+    "emotional": {
+      "type": "string"
+    },
+    "personalcharacteristics": {
+      "type": "string"
+    },
+    "behaviorsituation": {
+      "type": "string"
+    },
+    "behaviorDesc": {
+      "type": "string"
+    },
+    "experiencesickshild": {
+      "type": "string"
+    },
+    "availabilitysupport": {
+      "type": "string"
+    },
+    "childillness": {
+      "type": "string"
+    },
+    "additionalstressors": {
+      "type": "string"
+    },
+    "stressor": {
+      "type": "string"
+    },
+    "actualtr": {
+      "type": "string"
+    },
+    "directionsrehabilit": {
+      "type": "string"
+    }
+  }
+}

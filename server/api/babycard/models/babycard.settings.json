@@ -1,0 +1,133 @@
+{
+  "kind": "collectionType",
+  "collectionName": "babycards",
+  "info": {
+    "name": "babycard",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "Title": {
+      "type": "string",
+      "required": true
+    },
+    "color": {
+      "type": "string"
+    },
+    "otdelenije": {
+      "type": "string"
+    },
+    "kidf": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "ibn": {
+      "type": "string"
+    },
+    "finsrc": {
+      "type": "string"
+    },
+    "servicetype": {
+      "type": "string"
+    },
+    "desc": {
+      "type": "richtext"
+    },
+    "consaltfio": {
+      "type": "string"
+    },
+    "dado": {
+      "type": "string"
+    },
+    "momtel": {
+      "type": "string"
+    },
+    "dadtel": {
+      "type": "string"
+    },
+    "lastdiagnoz": {
+      "type": "string"
+    },
+    "firstdiagnoz": {
+      "type": "string"
+    },
+    "dr": {
+      "type": "string"
+    },
+    "zapnsdn": {
+      "type": "string"
+    },
+    "porkdn": {
+      "type": "string"
+    },
+    "genetnasdn": {
+      "type": "string"
+    },
+    "narsluhdn": {
+      "type": "string"
+    },
+    "narzrendn": {
+      "type": "string"
+    },
+    "zabjadn": {
+      "type": "string"
+    },
+    "tiajest": {
+      "type": "string"
+    },
+    "stadija": {
+      "type": "string"
+    },
+    "psihozak": {
+      "type": "richtext"
+    },
+    "kidi": {
+      "type": "string"
+    },
+    "kido": {
+      "type": "string"
+    },
+    "mamf": {
+      "type": "string"
+    },
+    "mami": {
+      "type": "string"
+    },
+    "mamo": {
+      "type": "string"
+    },
+    "dadf": {
+      "type": "string"
+    },
+    "dadi": {
+      "type": "string"
+    },
+    "defectologs": {
+      "collection": "defectolog",
+      "via": "babycard"
+    },
+    "logopeds": {
+      "collection": "logoped",
+      "via": "babycard"
+    },
+    "psihologs": {
+      "via": "babycard",
+      "collection": "psiholog"
+    },
+    "simpsihologs": {
+      "via": "babycard",
+      "collection": "simpsiholog"
+    }
+  }
+}

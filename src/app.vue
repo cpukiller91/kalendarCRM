@@ -1,7 +1,7 @@
 <template>
-    <v-app id="dayspan" v-cloak>
+    <v-app id="dayspan" v-cloak  >
 
-        <ds-calendar-app ref="app"
+        <ds-calendar-app v-if="logIn===true" ref="app"
                         :nav-drawer="nav"
                          :calendar="calendar"
                          :read-only="readOnly"
@@ -73,16 +73,72 @@
 
         </ds-calendar-app>
 
+        <v-container class="grey lighten-5" v-if="logIn===false">
+          <v-alert
+              :value="alert"
+              color="pink"
+              dark
+              border="top"
+              icon="mdi-home"
+              transition="scale-transition">Неправильное имя пользователя или пароль</v-alert>
+          <v-row no-gutters>
+            <v-col cols="12" sm="4">
+
+            </v-col>
+            <v-col cols="12" sm="4">
+              <v-card class="pa-2" outlined tile>
+
+                <form >
+                  <v-text-field
+                      v-model="identifier"
+                      label="Login"
+                      required
+
+                  ></v-text-field>
+                  <v-text-field
+                      v-model="password"
+                      type="password"
+                      label="Password"
+                      required
+
+                  ></v-text-field>
+
+                  <v-btn
+                      class="mr-4"
+                      @click="submit"
+                  >
+                    Login
+                  </v-btn>
+                  <v-btn @click="clear">
+                    clear
+                  </v-btn>
+                </form>
+              </v-card>
+            </v-col>
+            <v-col cols="12" sm="4">
+
+            </v-col>
+          </v-row>
+        </v-container>
+
     </v-app>
+
 </template>
 
 <script>
 import { dsMerge } from './functions'
 import { Calendar, Weekday, Month, Sorts } from 'custom-dayspan'
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:1337";
 
 export default {
     name: 'dayspan',
     data: vm => ({
+        logIn:false,
+        alert: false,
+        identifier: 'user1@rambler.ru',
+        password: '!4L@mer90',
+        //username:"Павлова Наталья Николаевна",
         storeKey: 'dayspanState1',
         calendar: Calendar.months(),
         readOnly: false,
@@ -134,12 +190,57 @@ export default {
         ]
     }),
     mounted () {
+
+      console.log("-->",typeof localStorage.getItem('login'), localStorage.getItem('login'))
+      if(localStorage.getItem('login')){
+        var LoginData = JSON.parse(localStorage.getItem('login'));
+        this.logIn = true;
+        this.readOnly = LoginData.user.usergroup.readOnly,
         window.app = this.$refs.app
-        this.nav = true
-        this.loadState()
+        this.nav = true;
+        //this.loadState()
+        console.log(LoginData);
+      }
+
+
+
     },
-    methods:
-        {
+    methods: {
+
+          submit () {
+
+            //this.$v.$touch()
+            axios.post('/auth/local', {
+
+              identifier: this.identifier,
+              password: this.password,
+            })
+            .then(response => {
+              this.alert = false;
+              // var  LoginData = JSON.parse(localStorage.getItem('login'));
+              // console.log(LoginData);
+              if(response.data.jwt){
+                let json = JSON.stringify(response.data)
+                this.logIn = true;
+                localStorage.setItem("login", json)
+              }
+
+
+            })
+            .catch(error => {
+              console.log(error);
+              this.alert = true;
+            });
+
+          },
+          clear () {
+            //this.$v.$reset()
+            this.login = ''
+            this.pass = ''
+
+            localStorage.setItem("login", '')
+          },
+
             getCalendarTime (calendarEvent) {
                 let sa = calendarEvent.start.format('a')
                 let ea = calendarEvent.end.format('a')

@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "defectologs",
+  "info": {
+    "name": "Defectolog",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "defIntel": {
+      "type": "string"
+    },
+    "gefMind": {
+      "type": "string"
+    },
+    "defAge": {
+      "type": "string"
+    },
+    "defSipr": {
+      "type": "string"
+    },
+    "babycard": {
+      "via": "defectologs",
+      "model": "babycard"
+    }
+  }
+}

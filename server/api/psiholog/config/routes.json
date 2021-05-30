@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/psihologs",
+      "handler": "psiholog.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/psihologs/count",
+      "handler": "psiholog.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/psihologs/:id",
+      "handler": "psiholog.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/psihologs",
+      "handler": "psiholog.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/psihologs/:id",
+      "handler": "psiholog.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/psihologs/:id",
+      "handler": "psiholog.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

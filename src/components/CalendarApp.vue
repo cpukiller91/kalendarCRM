@@ -9,6 +9,9 @@
           <ds-day-picker :span="calendar.span" @picked="rebuild"></ds-day-picker>
         </div>
       </slot>
+      <v-btn block @click="Logout">
+        Выход
+      </v-btn>
       <!--
       <slot name="drawerBottom"></slot>
 -->
@@ -69,7 +72,7 @@
           <span>{{ prevLabel }}</span>
         </v-tooltip>
       </slot>
-
+      {{username}}
       <slot name="next" v-bind="{next, nextLabel, calendar}">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -83,6 +86,7 @@
               <v-icon>keyboard_arrow_right</v-icon>
             </v-btn>
           </template>
+
           <span>{{ nextLabel }}</span>
         </v-tooltip>
       </slot>
@@ -328,6 +332,7 @@ export default {
     this.drawer = this.navDrawer
   },
   data: vm => ({
+    username:"",
     drawer: false,
     optionsVisible: false,
     options: [],
@@ -409,6 +414,13 @@ export default {
   },
 
   mounted() {
+
+    if(localStorage.getItem('login')){
+      var LoginData = JSON.parse(localStorage.getItem('login'));
+      //console.log(LoginData.user.username);
+      this.$data.username = LoginData.user.username + " - " + LoginData.user.usergroup.Title;
+    }
+
     if (!this.$dayspan.promptOpen) {
       this.$dayspan.promptOpen = (question, callback) => {
         this.promptVisible = false;
@@ -420,6 +432,9 @@ export default {
   },
 
   methods: {
+    Logout(){
+      localStorage.setItem("login", '');
+    },
     setState(state) {
       state.eventSorter = state.listTimes
         ? Sorts.List([Sorts.FullDay, Sorts.Start])

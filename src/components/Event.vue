@@ -1,7 +1,6 @@
 <template>
 
-    <div class="ds-event"
-         :class="classes">
+    <div class="ds-event" :class="classes">
 
         <div class="ds-event-header ds-event-area">
             <div class="ds-event-cancel" v-if="hasCancel">
@@ -25,21 +24,7 @@
 
             <div class="ds-event-actions">
 
-                <!-- Save -->
-                <slot name="scheduleSave" v-bind="{hasSave, save, labels, readOnly}">
 
-                    <v-btn
-                            v-if="!isReadOnly"
-                            class="ds-button-tall ml-3 mt-0 mb-2" depressed
-                            color="primary"
-                            :disabled="!canSave"
-                            @click.stop="save">
-
-                        <span v-html="labels.save"></span>
-
-                    </v-btn>
-
-                </slot>
 
                 <!-- More Actions -->
                 <slot name="scheduleActions" v-bind="{calendarEvent, schedule, calendar, actioned, readOnly}">
@@ -59,7 +44,7 @@
                 </slot>
 
             </div>
-
+            <div style="height: 40px"></div>
             <!-- Title -->
             <slot name="scheduleTitle" v-bind="{schedule, schedule, calendarEvent, details}">
 
@@ -67,73 +52,202 @@
                 <v-text-field single-line hide-details solo flat
                               class="ds-event-title"
                               :label="labels.title"
-                              :readonly="isReadOnly"
+                              :readonly="true"
                               v-model="details.title"
                 ></v-text-field>
 
             </slot>
 
         </div>
+      <!--
+              <div class="ds-event-body ds-event-area">
 
-        <div class="ds-event-body ds-event-area">
+                  <slot name="schedule" v-bind="slotData">
 
-            <slot name="schedule" v-bind="slotData">
+                      <ds-schedule
+                              :schedule="schedule"
+                              :day="day"
+                              :read-only="readOnly"
+                      ></ds-schedule>
 
-                <ds-schedule
-                        :schedule="schedule"
-                        :day="day"
-                        :read-only="readOnly"
-                ></ds-schedule>
+                  </slot>
 
-            </slot>
+              </div>
 
-        </div>
-
-        <!-- Tabs -->
+               Tabs -->
         <v-layout row v-if="hasTabs">
             <v-flex xs12 class="mt-2">
 
 
                 <v-tabs class="text--primary" v-model="tab">
 
-                    <v-tab href="#details" >
+                    <v-tab href="#details"  v-if="this.card">
                       Карточка
                     </v-tab>
 
-                    <v-tab href="#forecast" >
-                      Дефектологи
+                    <v-tab v-if="this.defect" href="#forecast" >
+                      Дефектолог
                     </v-tab>
 
-                    <v-tab href="#exclusions" >
-                      Логопеды
+                    <v-tab v-if="this.logos" href="#exclusions" >
+                      Логопед
                     </v-tab>
 
-                    <v-tab href="#inclusions" >
-                      Психологи
+                    <v-tab v-if="this.psiho" href="#inclusions" >
+                      Психолог
                     </v-tab>
 
-                    <v-tab href="#cancelled" >
-                      Семейный
+                    <v-tab v-if="this.famili"  href="#cancelled" >
+                      Семейный Психолог
                     </v-tab>
 
                     <slot name="eventTabsExtra" v-bind="slotData"></slot>
 
                     <!-- Details -->
-                    <v-tab-item value="details">
+                    <v-tab-item v-if="this.card" value="details">
                         <v-card flat>
                             <v-card-text>
+
                               <v-form v-model="valid">
                                 <v-container>
+
+
                                   <v-row>
                                     <v-col
                                         cols="12"
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="firstname"
+                                          v-model="kidf"
 
-                                          :counter="10"
+                                          label="Фамилия ребенка"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+
+                                      <v-text-field
+                                          v-model="kidi"
+
+                                          label="Имя ребенка"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="kido"
+                                          label="Отчество ребенка"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+
+                                  <v-row>
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="mamf"
+
+                                          label="Фамилия Мамы"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+
+                                      <v-text-field
+                                          v-model="mami"
+
+                                          label="Имя Мамы"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="mamo"
+                                          label="Отчество Мамы"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+
+                                  <v-row>
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="dadf"
+
+                                          label="Фамилия Папы"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+
+                                      <v-text-field
+                                          v-model="dadi"
+
+                                          label="Имя Папы"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="dado"
+                                          label="Отчество Папы"
+                                          required
+                                      ></v-text-field>
+                                    </v-col>
+                                  </v-row>
+
+                                  <v-row>
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="startDateForm"
                                           label="Дата"
+                                          prepend-icon="mdi-calendar"
+
+                                      ></v-text-field>
+
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="momtel"
+
+                                          label="Телефон Мамы"
                                           required
                                       ></v-text-field>
                                     </v-col>
@@ -143,21 +257,7 @@
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="lastname"
-
-                                          :counter="10"
-                                          label="Ф.И.О"
-                                          required
-                                      ></v-text-field>
-                                    </v-col>
-
-                                    <v-col
-                                        cols="12"
-                                        md="4"
-                                    >
-                                      <v-text-field
-                                          v-model="email"
-
+                                          v-model="age"
                                           label="Возраст"
                                           required
                                       ></v-text-field>
@@ -170,8 +270,7 @@
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="firstname"
-
+                                          v-model="city"
                                           :counter="10"
                                           label="Город"
                                           required
@@ -182,13 +281,13 @@
                                         cols="12"
                                         md="4"
                                     >
-                                      <v-text-field
-                                          v-model="lastname"
-
-                                          :counter="10"
+                                      <v-select
+                                          :items="OtdelenijeList"
                                           label="Отделение"
+                                          v-model="Otdelenije"
                                           required
-                                      ></v-text-field>
+                                      ></v-select>
+
                                     </v-col>
 
                                     <v-col
@@ -196,7 +295,7 @@
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="email"
+                                          v-model="ibn"
 
                                           label="№ и/б"
                                           required
@@ -209,13 +308,13 @@
                                         cols="12"
                                         md="4"
                                     >
-                                      <v-text-field
-                                          v-model="firstname"
-
-                                          :counter="10"
+                                      <v-select
+                                          :items="finsrcList"
                                           label="Источн финансирования"
+                                          v-model="finsrc"
                                           required
-                                      ></v-text-field>
+                                      ></v-select>
+
                                     </v-col>
 
                                     <v-col
@@ -223,9 +322,7 @@
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="lastname"
-
-                                          :counter="10"
+                                          v-model="servicetype"
                                           label="Вид услуги"
                                           required
                                       ></v-text-field>
@@ -236,8 +333,7 @@
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="email"
-
+                                          v-model="consaltfio"
                                           label="ФИО консультанта"
                                           required
                                       ></v-text-field>
@@ -247,15 +343,35 @@
                                   <v-row>
                                     <v-col
                                         cols="12"
-                                        md="4"
+                                        md="12"
                                     >
-                                      <v-text-field
-                                          v-model="firstname"
-
-                                          :counter="10"
+                                      <v-textarea
                                           label="Примечание (неявка или др.)"
+                                          v-model="desc"
+                                          hint="Hint text"
+                                      ></v-textarea>
+
+                                    </v-col>
+
+                                  </v-row>
+
+                                  <v-row>
+
+
+
+                                  </v-row>
+
+                                  <v-row>
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="dadtel"
+                                          label="Телефон Папы"
                                           required
                                       ></v-text-field>
+
                                     </v-col>
 
                                     <v-col
@@ -263,22 +379,21 @@
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="lastname"
-
-                                          :counter="10"
-                                          label="Контактные данные родителей (тел, @)"
-                                          required
-                                      ></v-text-field>
-                                    </v-col>
-
-                                    <v-col
-                                        cols="12"
-                                        md="4"
-                                    >
-                                      <v-text-field
-                                          v-model="email"
-
+                                          v-model="firstdiagnoz"
                                           label="Клинический диагноз"
+                                          required
+                                      ></v-text-field>
+
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-text-field
+                                          v-model="lastdiagnoz"
+
+                                          label="Сопутствующий диагноз (данные анамнеза, заключение спец-та, результ. инструмен. обслед. оперативные вмеш.)"
                                           required
                                       ></v-text-field>
                                     </v-col>
@@ -290,20 +405,7 @@
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="firstname"
-
-                                          :counter="10"
-                                          label="Сопутствующий диагноз (данные анамнеза, заключение спец-та, результ. инструмен. обслед. оперативные вмеш.)"
-                                          required
-                                      ></v-text-field>
-                                    </v-col>
-
-                                    <v-col
-                                        cols="12"
-                                        md="4"
-                                    >
-                                      <v-text-field
-                                          v-model="lastname"
+                                          v-model="sikrange"
 
                                           :counter="10"
                                           label="дл-ть бол-ни"
@@ -315,12 +417,24 @@
                                         cols="12"
                                         md="4"
                                     >
-                                      <v-text-field
-                                          v-model="email"
-
+                                      <v-select
+                                          :items="drList"
                                           label="Д или Р"
+                                          v-model="dr"
                                           required
-                                      ></v-text-field>
+                                      ></v-select>
+                                    </v-col>
+
+                                    <v-col
+                                        cols="12"
+                                        md="4"
+                                    >
+                                      <v-select
+                                          :items="dnList"
+                                          label="Заб.н.с. (ЦНС)"
+                                          v-model="zapnsdn"
+                                          required
+                                      ></v-select>
                                     </v-col>
                                   </v-row>
 
@@ -329,136 +443,121 @@
                                         cols="12"
                                         md="4"
                                     >
-                                      <v-text-field
-                                          v-model="firstname"
-
-                                          :counter="10"
-                                          label="Заб.н.с. (ЦНС) Д/Н"
+                                      <v-select
+                                          :items="dnList"
+                                          label="Врожд пороки развития"
+                                          v-model="porkdn"
                                           required
-                                      ></v-text-field>
+                                      ></v-select>
                                     </v-col>
 
                                     <v-col
                                         cols="12"
                                         md="4"
                                     >
-                                      <v-text-field
-                                          v-model="lastname"
-
-                                          :counter="10"
-                                          label="Врожд пороки развития (Д/Н)"
+                                      <v-select
+                                          :items="dnList"
+                                          label="Генет и наслед б-ни "
+                                          v-model="genetnasdn"
                                           required
-                                      ></v-text-field>
+                                      ></v-select>
                                     </v-col>
 
                                     <v-col
                                         cols="12"
                                         md="4"
                                     >
-                                      <v-text-field
-                                          v-model="email"
-
-                                          label="Генет и наслед б-ни (Д/Н)"
-                                          required
-                                      ></v-text-field>
-                                    </v-col>
-                                  </v-row>
-
-                                  <v-row>
-                                    <v-col
-                                        cols="12"
-                                        md="4"
-                                    >
-                                      <v-text-field
-                                          v-model="firstname"
-
-                                          :counter="10"
+                                      <v-select
+                                          :items="dnList"
                                           label="Нарушение слуха"
+                                          v-model="narsluhdn"
                                           required
-                                      ></v-text-field>
+                                      ></v-select>
                                     </v-col>
+                                  </v-row>
 
+                                  <v-row>
                                     <v-col
                                         cols="12"
-                                        md="4"
+                                        md="3"
                                     >
-                                      <v-text-field
-                                          v-model="lastname"
-
-                                          :counter="10"
+                                      <v-select
+                                          :items="dnList"
                                           label="Нарушение зрения"
+                                          v-model="narzrendn"
                                           required
-                                      ></v-text-field>
+                                      ></v-select>
                                     </v-col>
 
                                     <v-col
                                         cols="12"
-                                        md="4"
+                                        md="3"
                                     >
-                                      <v-text-field
-                                          v-model="email"
-
-                                          label="Тяжесть б-ни (З/Л/С/Т)"
-                                          required
-                                      ></v-text-field>
+                                      <v-select
+                                        :items="tiajestList"
+                                        label="Тяжесть б-ни"
+                                        v-model="tiajest"
+                                        required
+                                    ></v-select>
                                     </v-col>
-                                  </v-row>
 
+                                    <v-col
+                                        cols="12"
+                                        md="3"
+                                    >
+                                      <v-select
+                                          :items="stadijaList"
+                                          label="Стадия б-ни"
+                                          v-model="stadija"
+                                          required
+                                      ></v-select>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        md="3"
+                                    >
+                                      <v-select
+                                          :items="dnList"
+                                          label="Заб-я ОДА"
+                                          v-model="zabjadn"
+                                          required
+                                      ></v-select>
+                                    </v-col>
+
+                                  </v-row>
                                   <v-row>
                                     <v-col
                                         cols="12"
-                                        md="4"
+                                        md="12"
                                     >
-                                      <v-text-field
-                                          v-model="firstname"
-
-                                          :counter="10"
-                                          label="Стадия б-ни (З/Р/О/П)"
-                                          required
-                                      ></v-text-field>
-                                    </v-col>
-
-                                    <v-col
-                                        cols="12"
-                                        md="4"
-                                    >
-                                      <v-text-field
-                                          v-model="lastname"
-
-                                          :counter="10"
-                                          label="Заб-я ОДА (ДЦП)"
-                                          required
-                                      ></v-text-field>
-                                    </v-col>
-
-                                    <v-col
-                                        cols="12"
-                                        md="4"
-                                    >
-                                      <v-text-field
-                                          v-model="email"
-
+                                      <v-textarea
                                           label="Психолого-педагогическое заключение"
-                                          required
-                                      ></v-text-field>
-                                    </v-col>
-                                  </v-row>
+                                          v-model="psihozak"
+                                          hint="Hint text"
+                                      ></v-textarea>
 
+                                    </v-col>
+
+                                  </v-row>
                                   <v-row>
                                     <v-col
                                         cols="12"
                                         md="4"
-                                    >
-                                      <v-text-field
-                                          v-model="firstname"
+                                    > <!-- Save -->
+                                      <slot name="scheduleSave" v-bind="{hasSave, save, labels, readOnly}">
 
-                                          :counter="10"
-                                          label="основное направление реабилитации (ревма)"
-                                          required
-                                      ></v-text-field>
-                                    </v-col>
+                                        <v-btn
+                                            v-if="!isReadOnly"
+                                            class="ds-button-tall ml-3 mt-0 mb-2" depressed
+                                            color="primary"
+                                            :disabled="!canSave"
+                                            @click.stop="save">
 
+                                          <span v-html="labels.save"></span>
 
+                                        </v-btn>
+
+                                      </slot></v-col>
                                   </v-row>
 
                                 </v-container>
@@ -469,7 +568,7 @@
                     </v-tab-item>
 
                     <!-- Forecast -->
-                    <v-tab-item value="forecast" >
+                    <v-tab-item v-if="this.defect" value="forecast" >
                       <v-card flat>
                         <v-card-text>
                           <v-form
@@ -505,60 +604,76 @@
                                 label="Рекомендуемая АООП, СИПР"
                                 required
                             ></v-text-field>
-                            <!--
-                                                        <v-text-field
-                                                            v-model="email"
-                                                            :rules="emailRules"
-                                                            label="E-mail"
-                                                            required
-                                                        ></v-text-field>
+                            <v-row>
+                              <v-col
+                                  cols="12"
+                                  md="4"
+                              > <!-- Save -->
+                                <slot name="scheduleSave" v-bind="{hasSave, save, labels, readOnly}">
 
-                                                        <v-select
-                                                            v-model="select"
-                                                            :items="items"
-                                                            :rules="[v => !!v || 'Item is required']"
-                                                            label="Item"
-                                                            required
-                                                        ></v-select>
+                                  <v-btn
+                                      v-if="!isReadOnly"
+                                      class="ds-button-tall ml-3 mt-0 mb-2" depressed
+                                      color="primary"
+                                      :disabled="!canSave"
+                                      @click.stop="saveDefect">
 
-                                                        <v-checkbox
-                                                            v-model="checkbox"
-                                                            :rules="[v => !!v || 'You must agree to continue!']"
-                                                            label="Do you agree?"
-                                                            required
-                                                        ></v-checkbox>
+                                    <span v-html="labels.save"></span>
 
-                                                        <v-btn
-                                                            :disabled="!valid"
-                                                            color="success"
-                                                            class="mr-4"
-                                                            @click="validate"
-                                                        >
-                                                          Validate
-                                                        </v-btn>
+                                  </v-btn>
 
-                                                        <v-btn
-                                                            color="error"
-                                                            class="mr-4"
-                                                            @click="reset"
-                                                        >
-                                                          Reset Form
-                                                        </v-btn>
-
-                                                        <v-btn
-                                                            color="warning"
-                                                            @click="resetValidation"
-                                                        >
-                                                          Reset Validation
-                                                        </v-btn>-->
+                                </slot></v-col>
+                            </v-row>
                           </v-form>
+                          <template>
+                            <v-expansion-panels focusable>
+                              <v-expansion-panel
+                                  v-for="(item,i) in defectologs"
+                                  :key="i"
+                              >
+                                <v-expansion-panel-header>{{item.id}} - Комментарий специалиста ({{item.created_at}})</v-expansion-panel-header>
 
+                                <v-expansion-panel-content>
+                                  <v-text-field
+                                      v-model="item.defIntel"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="Степень нарушения интеллекта"
+                                      required
+                                  ></v-text-field>
+                                  <v-text-field
+                                      v-model="item.gefMind"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="Форма мышления"
+                                      required
+                                  ></v-text-field>
+                                  <v-text-field
+                                      v-model="item.defAge"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="Актуал. психол. возраст"
+                                      required
+                                  ></v-text-field>
+                                  <v-text-field
+                                      v-model="item.defSipr"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="Рекомендуемая АООП, СИПР"
+                                      required
+                                  ></v-text-field>
+                                </v-expansion-panel-content>
+
+                              </v-expansion-panel>
+                            </v-expansion-panels>
+                          </template>
                         </v-card-text>
+
                       </v-card>
                     </v-tab-item>
 
                     <!-- Exclusions -->
-                    <v-tab-item value="exclusions" >
+                    <v-tab-item v-if="this.logos" value="exclusions" >
                       <v-card flat>
                         <v-card-text>
 
@@ -567,20 +682,21 @@
                               v-model="valid"
                               lazy-validation
                           >
-                            <v-text-field
-                                v-model="logoRechi"
-                                :counter="200"
-
-                                label="Характеристика речи (норма, задер., особ.ф.р., наруш.фор.р./ ОНР/системн.н.р. + уровни)"
+                            <v-select
+                                :items="CharacteristicsSpeech"
+                                v-model="characteristics"
+                                label="Характеристика речи"
                                 required
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="logoSopnar"
-                                :counter="200"
+                            ></v-select>
 
-                                label="Сопутствующие наруш. (дизартрия, диз.симпт., заикание, алалия, афазия, наруш.письма, чтения)"
+                            <v-select
+                                :items="AssociatedViolations"
+                                v-model="associated"
+                                label="Сопутствующие наруш."
                                 required
-                            ></v-text-field>
+                            ></v-select>
+
+
                             <v-text-field
                                 v-model="logoActual"
                                 :counter="200"
@@ -588,15 +704,69 @@
                                 label="Актуальное речевое развитие+Нормативное речевое развитие"
                                 required
                             ></v-text-field>
+                            <v-row>
+                              <v-col
+                                  cols="12"
+                                  md="4"
+                              > <!-- Save -->
+                                <slot name="scheduleSave" v-bind="{hasSave, save, labels, readOnly}">
 
+                                  <v-btn
+                                      class="ds-button-tall ml-3 mt-0 mb-2" depressed
+                                      color="primary"
+                                      @click.stop="saveLogoped">
+
+                                    <span v-html="labels.save"></span>
+
+                                  </v-btn>
+
+                                </slot></v-col>
+                            </v-row>
                           </v-form>
+                          <template>
+                            <v-expansion-panels focusable>
+                              <v-expansion-panel
+                                  v-for="(item,i) in logopeds"
+                                  :key="i"
+                              >
+                                <v-expansion-panel-header>{{item.id}} - Комментарий специалиста ({{item.created_at}})</v-expansion-panel-header>
 
+                                <v-expansion-panel-content>
+                                  <v-select
+                                      :items="CharacteristicsSpeech"
+                                      v-model="item.characteristics"
+                                      label="Характеристика речи"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+
+                                  <v-select
+                                      :items="AssociatedViolations"
+                                      v-model="item.associated"
+                                      label="Сопутствующие наруш."
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+
+
+                                  <v-text-field
+                                      v-model="item.logoactual"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="Актуальное речевое развитие+Нормативное речевое развитие"
+                                      required
+                                  ></v-text-field>
+                                </v-expansion-panel-content>
+
+                              </v-expansion-panel>
+                            </v-expansion-panels>
+                          </template>
                         </v-card-text>
                       </v-card>
                     </v-tab-item>
 
                     <!-- Inclusions -->
-                    <v-tab-item value="inclusions" >
+                    <v-tab-item v-if="this.psiho" value="inclusions" >
                       <v-card flat>
                         <v-card-text>
 
@@ -605,85 +775,190 @@
                               v-model="valid"
                               lazy-validation
                           >
-                            <v-text-field
-                                v-model="logoRechi"
-                                :counter="200"
-
-                                label="Эмоциональное состояние (норма -1, относительно стабильное -2, нестабильное -3, нарушенное подавленное - 4, нарушенное возбужденное-5)"
+                            <v-select
+                                :items="emotionalCondition"
+                                v-model="emotionalcondition"
+                                label="эмоциональное состояние "
                                 required
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="logoSopnar"
-                                :counter="200"
+                            ></v-select>
 
-                                label="Мотивационно-потребностная сфера (норма-1, инф-2, суж-3, девиант -4, искаж-5)"
+                            <v-select
+                                :items="MotivationalSphere"
+                                v-model="motivationalsphere"
+                                label="Мотивационно-потребностная сфера "
                                 required
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="logoActual"
-                                :counter="200"
+                            ></v-select>
 
-                                label="Социальные контакты (широкий круг общения -1, суженный - 2, ограничен общением с близким - 3)"
+                            <v-select
+                                :items="SocialContacts"
+                                v-model="socialcontacts"
+                                label="Социальные контакты "
                                 required
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="logoActual"
-                                :counter="200"
+                            ></v-select>
 
+                            <v-text-field
+                                v-model="dopolstesor"
+                                :counter="200"
                                 label="Дополнительные стрессоры"
                                 required
                             ></v-text-field>
-                            <v-text-field
-                                v-model="logoActual"
-                                :counter="200"
 
-                                label="неспецифические трудности (несформированность норм и правил поведения-1, недостаточная произвольность ЭВС-2, повышенная внутриличностная конфликтность-3, снижение учебной мотивации-4, проблемы самоопредения-5, возрастные кризисы-6, трудности адаптация к школе-7, прочее -8 (указать)"
+                            <v-select
+                                :items="nspecificDifficulties"
+                                v-model="nspecificdifficulties"
+                                label="неспецифические трудности"
                                 required
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="logoActual"
-                                :counter="200"
+                            ></v-select>
 
-                                label="специфические трудности (трудности адаптации к ситуации госпитализации-1, фиксация на психофизическом дискомфорте-2, конфликтное самоотношение, негативный образ телесного Я-3, трудности адаптации к новым социальным условиям в ситуации манифестации болезни-4, сужение деятельности и общения в ситуации длительного хронического заболевания -5, низкая комлаентность-6, страхи медицинских процедур-7, прочее-8 (указать)"
+                            <v-select
+                                :items="specificDifficulties"
+                                v-model="specificdifficulties"
+                                label="специфические трудности"
                                 required
-                            ></v-text-field>
+                            ></v-select>
+
                             <v-text-field
-                                v-model="logoActual"
+                                v-model="actualtrabl"
                                 :counter="200"
 
                                 label="актуальная психологическая проблема"
                                 required
                             ></v-text-field>
-                            <v-text-field
-                                v-model="logoActual"
-                                :counter="200"
-
-                                label="приоритетное направление реабилитации (мониторинг-1, повышение комплаентности-2, формирование норм и правил поведения-3, поддержка положительного образа Я, самопринятия (телесное Я)-4, стабилизация эмоционального состояние-5, укрепление внутриличностных ресурсов (копинги)-6, помощь в решении ситуативных коммуникативных задач-7, расширение мотивационно-потребностной сферы-8, прочее-9 (указать)"
+                            <v-select
+                                :items="directionsRehabilitation"
+                                label="направления реабилитация "
+                                v-model="directionsrehabilitation"
                                 required
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="logoActual"
-                                :counter="200"
-
-                                label="основная форма работы ( мониторинг-1, информирование -2, психообразование-3, игровая терапия -4, арт-терапия -5, включение в продуктивную деятельность -6, групповая терапия-7, помощь в формировании ближайших жизненных перспектив-8, прочее-9 (указать)"
+                            ></v-select>
+                            <v-select
+                                :items="formOfWork"
+                                label="основная форма работы "
+                                v-model="formofwork"
                                 required
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="logoActual"
-                                :counter="200"
-
-                                label="воспитатальная установка родителей (личностно-ориентированная-1, на обучение-2, на лечение-3, отстраненная-4, прочее -5 (написать)"
+                            ></v-select>
+                            <v-select
+                                :items="parentingAttitude"
+                                v-model="parentingattitude"
+                                label="спитательная установка родителей"
                                 required
-                            ></v-text-field>
+                            ></v-select>
 
+                            <v-row>
+                              <v-col
+                                  cols="12"
+                                  md="4"
+                              > <!-- Save -->
+                                <slot name="scheduleSave" v-bind="{hasSave, save, labels, readOnly}">
+
+                                  <v-btn
+                                      class="ds-button-tall ml-3 mt-0 mb-2" depressed
+                                      color="primary"
+
+                                      @click.stop="savePsiholog">
+
+                                    <span v-html="labels.save"></span>
+
+                                  </v-btn>
+
+                                </slot></v-col>
+                            </v-row>
                           </v-form>
+                          <template>
+                            <v-expansion-panels focusable>
+                              <v-expansion-panel
+                                  v-for="(item,i) in psiholog"
+                                  :key="i"
+                              >
+                                <v-expansion-panel-header>{{item.id}} - Комментарий специалиста ({{item.created_at}})</v-expansion-panel-header>
 
+                                <v-expansion-panel-content>
+                                  <v-select
+                                      :items="emotionalCondition"
+                                      v-model="item.emotionalcondition"
+                                      label="эмоциональное состояние "
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+
+                                  <v-select
+                                      :items="MotivationalSphere"
+                                      v-model="item.motivationalsphere"
+                                      label="Мотивационно-потребностная сфера "
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+
+                                  <v-select
+                                      :items="SocialContacts"
+                                      v-model="item.socialcontacts"
+                                      label="Социальные контакты "
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+
+                                  <v-text-field
+                                      v-model="item.dopolstesor"
+                                      :counter="200"
+                                      label="Дополнительные стрессоры"
+                                      :readonly="true"
+                                      required
+                                  ></v-text-field>
+
+                                  <v-select
+                                      :items="nspecificDifficulties"
+                                      v-model="item.nspecificdifficulties"
+                                      label="неспецифические трудности"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+
+                                  <v-select
+                                      :items="specificDifficulties"
+                                      v-model="item.specificdifficulties"
+                                      label="специфические трудности"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+
+                                  <v-text-field
+                                      v-model="item.actualtrabl"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="актуальная психологическая проблема"
+                                      required
+                                  ></v-text-field>
+                                  <v-select
+                                      :items="directionsRehabilitation"
+                                      label="направления реабилитация "
+                                      v-model="item.directionsrehabilitation"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+                                  <v-select
+                                      :items="formOfWork"
+                                      label="основная форма работы "
+                                      v-model="item.formofwork"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+                                  <v-select
+                                      :items="parentingAttitude"
+                                      v-model="item.parentingattitude"
+                                      label="спитательная установка родителей"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+                                </v-expansion-panel-content>
+
+                              </v-expansion-panel>
+                            </v-expansion-panels>
+                          </template>
                         </v-card-text>
                       </v-card>
                     </v-tab-item>
 
                     <!-- Cancelled -->
-                    <v-tab-item value="cancelled" >
+                    <v-tab-item v-if="this.famili" value="cancelled" >
                       <v-card flat>
                         <v-card-text>
 
@@ -695,20 +970,24 @@
                             <v-select
                                 :items="ageCategory"
                                 label="возрастная категория "
+                                v-model="agecategory"
                                 required
                             ></v-select>
                             <v-select
                                 :items="emotionalCondition"
+                                v-model="emotional"
                                 label="эмоциональное состояние "
                                 required
                             ></v-select>
                             <v-select
                                 :items="personalCharacteristics"
+                                v-model="personalcharacteristics"
                                 label="личностные характеристики "
                                 required
                             ></v-select>
                             <v-select
                                 :items="behaviorSituation"
+                                v-model="behaviorsituation"
                                 label="поведение в ситуации стресса "
                                 required
                             ></v-select>
@@ -722,37 +1001,41 @@
                             ></v-text-field>
                             <v-select
                                 :items="experienceSickChild"
+                                v-model="experiencesickshild"
                                 label="наличие опыта воспитания больного ребенка "
                                 required
                             ></v-select>
 
                             <v-select
                                 :items="availabilitySupport"
+                                v-model="availabilitysupport"
                                 label="наличие поддержки и помощи "
                                 required
                             ></v-select>
 
                             <v-select
                                 :items="childIllness"
+                                v-model="childillness"
                                 label="восприятие матерью болезни ребенка "
                                 required
                             ></v-select>
 
                             <v-select
                                 :items="additionalStressors"
+                                v-model="additionalstressors"
                                 label="дополнительные стрессоры "
                                 required
                             ></v-select>
 
                             <v-text-field
-                                v-model="logoActual"
+                                v-model="stressor"
                                 :counter="200"
 
                                 label="Примечание (укажите какие стрессоры)"
                                 required
                             ></v-text-field>
                             <v-text-field
-                                v-model="logoActual"
+                                v-model="actualtr"
                                 :counter="200"
 
                                 label="актуальная проблема"
@@ -761,11 +1044,132 @@
                             <v-select
                                 :items="directionsRehabilitation"
                                 label="направления реабилитация "
+                                v-model="directionsrehabilit"
                                 required
                             ></v-select>
+                            <v-row>
+                              <v-col
+                                  cols="12"
+                                  md="4"
+                              > <!-- Save -->
+                                <slot name="scheduleSave" v-bind="{hasSave, save, labels, readOnly}">
 
+                                  <v-btn
+                                      class="ds-button-tall ml-3 mt-0 mb-2" depressed
+                                      color="primary"
+
+                                      @click.stop="saveSimPsiholog">
+
+                                    <span v-html="labels.save"></span>
+
+                                  </v-btn>
+
+                                </slot></v-col>
+                            </v-row>
                           </v-form>
+                          <template>
+                            <v-expansion-panels focusable>
+                              <v-expansion-panel
+                                  v-for="(item,i) in simpsiholog"
+                                  :key="i"
+                              >
+                                <v-expansion-panel-header>{{item.id}} - Комментарий специалиста ({{item.created_at}})</v-expansion-panel-header>
 
+                                <v-expansion-panel-content>
+                                  <v-select
+                                      :items="ageCategory"
+                                      label="возрастная категория "
+                                      v-model="item.agecategory"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+                                  <v-select
+                                      :items="emotionalCondition"
+                                      label="эмоциональное состояние "
+                                      v-model="item.emotional"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+                                  <v-select
+                                      :items="personalCharacteristics"
+                                      label="личностные характеристики "
+                                      v-model="item.personalcharacteristics"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+                                  <v-select
+                                      :items="behaviorSituation"
+                                      label="поведение в ситуации стресса "
+                                      v-model="item.behaviorsituation"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+
+                                  <v-text-field
+                                      v-model="item.behaviorDesc"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="поведение в ситуации стресса описание"
+                                      required
+                                  ></v-text-field>
+                                  <v-select
+                                      :items="experienceSickChild"
+                                      v-model="item.experiencesickshild"
+                                      label="наличие опыта воспитания больного ребенка "
+                                      required
+                                      :readonly="true"
+                                  ></v-select>
+
+                                  <v-select
+                                      :items="availabilitySupport"
+                                      v-model="item.availabilitysupport"
+                                      label="наличие поддержки и помощи "
+                                      required
+                                      :readonly="true"
+                                  ></v-select>
+
+                                  <v-select
+                                      :items="childIllness"
+                                      v-model="item.childillness"
+                                      label="восприятие матерью болезни ребенка "
+                                      required
+                                      :readonly="true"
+                                  ></v-select>
+
+                                  <v-select
+                                      :items="additionalStressors"
+                                      v-model="item.additionalstressors"
+                                      label="дополнительные стрессоры "
+                                      required
+                                      :readonly="true"
+                                  ></v-select>
+
+                                  <v-text-field
+                                      v-model="item.stressor"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="Примечание (укажите какие стрессоры)"
+                                      required
+                                  ></v-text-field>
+                                  <v-text-field
+                                      v-model="item.actualtr"
+                                      :counter="200"
+                                      :readonly="true"
+                                      label="актуальная проблема"
+                                      required
+                                  ></v-text-field>
+                                  <v-select
+                                      :items="directionsRehabilitation"
+                                      label="направления реабилитация "
+                                      v-model="item.directionsrehabilit"
+                                      :readonly="true"
+                                      required
+                                  ></v-select>
+                                </v-expansion-panel-content>
+
+                              </v-expansion-panel>
+                            </v-expansion-panels>
+                          </template>
                         </v-card-text>
                       </v-card>
                     </v-tab-item>
@@ -781,7 +1185,7 @@
 
 <script>
 import { Day, Calendar, CalendarEvent, Time, Schedule, Functions as fn } from 'custom-dayspan'
-
+import axios from "axios";
 export default {
 
     name: 'dsEvent',
@@ -914,6 +1318,42 @@ export default {
 
     data: vm => ({
         tab: 'details',
+        babycardid:null,
+        defectologs:[],
+        logopeds:[],
+        psiholog:[],
+        simpsiholog:[],
+
+      emotional:null,
+      personalcharacteristics:null,
+      behaviorsituation:null,
+      experiencesickshild:null,
+      availabilitysupport:null,
+      childillness:null,
+      additionalstressors:null,
+      stressor:null,
+      actualtr:null,
+      directionsrehabilit:null,
+
+        emotionalcondition:null,
+        motivationalsphere:null,
+        socialcontacts:null,
+        dopolstesor:null,
+        nspecificdifficulties:null,
+        specificdifficulties:null,
+        actualtrabl:null,
+        directionsrehabilitation:null,
+        formofwork:null,
+        parentingattitude:null,
+
+        agecategory:null,
+        //date: this.calendarEvent.start.format("Y-MM-DD"),
+        card:false,
+        defect:false,
+        famili:false,
+        logos:false,
+        psiho:false,
+
         schedule: vm.$dayspan.getDefaultEventSchedule(),
         details: vm.$dayspan.getDefaultEventDetails(),
         defSipr:null,
@@ -928,6 +1368,64 @@ export default {
         logoRechi:null,
         logoSopnar:null,
         logoActual:null,
+
+        psihozak:"Неустойчивое психологическое состояние с тенденцией к сниженному у инфантильной внушаемой девушки в ситуации госпитализации.",
+        stadijaList:["З","Р","О","П"],
+        stadija:"Р",
+        tiajestList:["З","Л","С","Т"],
+        tiajest:"С",
+        dnList:["Д","Н"],
+        zabjadn:"Н",
+        narzrendn:"Н",
+        narsluhdn:"Н",
+        genetnasdn:"Н",
+        porkdn:"Н",
+        zapnsdn:"Н",
+
+        drList:["Д","Р"],
+        dr:"Д",
+        sikrange:"10m",
+        firstdiagnoz:"ХДПН",
+        lastdiagnoz:"Медикаментозный гиперкортицизм.",
+        dadtel:"+380955611757",
+        dadfio:"Имя Папы Фамилия",
+        momtel:"+380955611757",
+        momfio:"Имя Мамы Фамилия",
+        desc:"Голубева",
+        consaltfio:"Голубева",
+        servicetype:"Конс.",
+        finsrcList:["ВМП","ПМУ","ОМС"],
+        finsrc:"ВМП",
+        ibn:"44/21",
+        city:"РФ",
+        Otdelenije:"ОПНД",
+        age:"12л6м",
+
+        mamf:"Пупкина",
+        mami:"Иванка",
+        mamo:"Ивановна",
+
+        dadf:"Пупкин",
+        dadi:"Иван",
+        dado:"Иванович",
+
+        kidf:"Пупкин",
+        kidi:"Иван",
+        kido:"Иванович",
+
+        OtdelenijeList:["ОПРДВ","ОПНД","ОЗПТ","ОДВЛ (ВИП)","ОСЗТ","У(ОКМП)","КДЦ" ],
+        parentingAttitude:["личностно-ориентированная","на обучение", "на лечение", "отстраненная"],
+        formOfWork:["мониторинг", "информирование", "психообразование", "игровая терапия", "арт-терапия", "включение в продуктивную деятельность", "групповая терапия", "помощь в формировании ближайших жизненных перспектив"],
+        specificDifficulties:["трудности адаптации к ситуации госпитализации", "фиксация на психофизическом дискомфорте", "конфликтное самоотношение", "негативный образ телесного Я", "трудности адаптации к новым социальным условиям в ситуации манифестации болезни", "сужение деятельности и общения в ситуации длительного хронического заболевания", "низкая комлаентность", "страхи медицинских процедур"],
+        nspecificDifficulties:["несформированность норм и правил поведения", "недостаточная произвольность ЭВС", "повышенная внутриличностная конфликтность", "снижение учебной мотивации", "проблемы самоопредения", "возрастные кризисы", "трудности адаптация к школе"],
+        SocialContacts:["широкий круг общения", "суженный", "ограничен общением с близким"],
+        MotivationalSphere:["норма", "инф", "суж", "девиант", "искаж"],
+
+        AssociatedViolations:["дизартрия", "диз.симпт.", "заикание", "алалия", "афазия", "наруш.письма", "чтения"],
+        associated:"дизартрия",
+        CharacteristicsSpeech:["норма", "задер.", "особ.ф.р.", "наруш.фор.р./ ОНР/системн.н.р. + уровни"],
+        characteristics:"норма",
+
         directionsRehabilitation:["структирирование режима дня", "эмоциональная поддержка", "информирование", "оптимизация взаимодействия с медицинским персоналом", "повышение комлаентности", "неотложная психологическая помощь", "семейное консультирование"],
         additionalStressors:["есть", "нет"],
         childIllness:["соответствует ситуации", "недооценка", "переоценка" ],
@@ -971,6 +1469,10 @@ export default {
 
     computed:
         {
+            startDateForm () {
+              //"2021-03-09"
+              return this.calendarEvent.start.format("Y-MM-DD")
+            },
             slotData () {
                 return {
                     targetSchedule: this.targetSchedule,
@@ -1037,9 +1539,124 @@ export default {
                 return this.readOnly || this.$dayspan.readOnly
             }
         },
+    mounted () {
 
+        var LoginData = JSON.parse(localStorage.getItem('login'));
+        axios.get('/users', {params:{username:LoginData.user.username}})
+        .then(response => {
+          console.log("User load");
+          this.card = response.data[0].usergroup.card;
+          this.defect = response.data[0].usergroup.defect;
+          this.famili = response.data[0].usergroup.famili;
+          this.logos = response.data[0].usergroup.logos;
+          this.psiho = response.data[0].usergroup.psiho;
+          //this.details.color = response.data[0].usergroup.color;
+          console.log(response);
+          //this.edit();
+        });
+        this.reload();
+
+
+    },
     methods:
         {
+          saveDefect(){
+            axios.post('/defectologs', {
+              defIntel:this.defIntel,
+              gefMind:this.gefMind,
+              defAge:this.defAge,
+              defSipr:this.defSipr,
+              babycard: this.babycardid
+            })
+            .then(response => {
+              this.reload();
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+            console.log("Save Def")
+          },
+          saveLogoped(){
+            axios.post('/logopeds', {
+              characteristics:this.characteristics,
+              associated:this.associated,
+              logoactual:this.logoActual,
+              babycard: this.babycardid
+            })
+            .then(response => {
+              this.reload();
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+            console.log("Save Logo")
+          },
+          savePsiholog(){
+            axios.post('/psihologs', {
+              emotionalcondition:this.emotionalcondition,
+              motivationalsphere:this.motivationalsphere,
+              socialcontacts:this.socialcontacts,
+              dopolstesor: this.dopolstesor,
+              nspecificdifficulties:this.nspecificdifficulties,
+              specificdifficulties:this.specificdifficulties,
+              actualtrabl:this.actualtrabl,
+              directionsrehabilitation:this.directionsrehabilitation,
+              formofwork:this.formofwork,
+              parentingattitude:this.parentingattitude,
+              babycard: this.babycardid
+
+            })
+            .then(response => {
+              this.reload();
+              console.log(response);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+            console.log("Save Psiholog")
+          },
+          saveSimPsiholog(){
+            axios.post('/simpsihologs', {
+              agecategory:this.agecategory,
+              babycard: this.babycardid,
+              emotional:this.emotional,
+              personalcharacteristics:this.personalcharacteristics,
+              behaviorsituation:this.behaviorsituation,
+              behaviorDesc:this.behaviorDesc,
+              experiencesickshild:this.experiencesickshild,
+              availabilitysupport:this.availabilitysupport,
+              childillness:this.childillness,
+              additionalstressors:this.additionalstressors,
+              stressor:this.stressor,
+              actualtr:this.actualtr,
+              directionsrehabilit:this.directionsrehabilit
+
+            })
+            .then(response => {
+              console.log(response);
+              this.reload();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+            console.log("Save SimPsiholog")
+          },
+          reload(){
+            axios.get('/babycards/', {params:{Title:this.details.title,date:this.calendarEvent.start.format("Y-MM-DD")}})
+            .then(response => {
+              console.log("Card load");
+              this.babycardid = response.data[0].id;
+              this.defectologs = response.data[0].defectologs;
+              this.logopeds = response.data[0].logopeds;
+              this.psiholog = response.data[0].psihologs;
+              this.simpsiholog = response.data[0].simpsihologs;
+
+              console.log(response.data);
+              //this.edit();
+            })
+          },
             onChangeIcon (){
               switch (this.details.icon) {
                 case 'virus':
@@ -1072,8 +1689,63 @@ export default {
                     break
               }
             },
+
             save () {
-                var ev = this.getEvent('save')
+              var data = {
+                Title:this.details.title,
+                otdelenije: this.Otdelenije,
+                date:this.startDateForm,
+
+                kidf:this.kidf,
+                kidi:this.kidi,
+                kido:this.kido,
+
+                mamf:this.mamf,
+                mami:this.mami,
+                mamo:this.mamo,
+
+                dadf:this.dadf,
+                dadi:this.dadi,
+                dado:this.dadi,
+
+                city:this.city,
+                ibn:this.ibn,
+                finsrc:this.finsrc,
+                servicetype:this.servicetype,
+                consaltfio:this.consaltfio,
+                desc:this.desc,
+                momfio:this.momfio,
+                momtel:this.momtel,
+                dadfio:this.dadfio,
+                dadtel:this.dadtel,
+                lastdiagnoz:this.lastdiagnoz,
+                firstdiagnoz:this.firstdiagnoz,
+                sikrange:this.sikrange,
+                dr:this.dr,
+                zapnsdn:this.zapnsdn,
+                porkdn: this.porkdn,
+                genetnasdn:this.genetnasdn,
+                narsluhdn:this.narsluhdn,
+                narzrendn:this.narzrendn,
+                zabjadn:this.zabjadn,
+                tiajest:this.tiajest,
+                stadija:this.stadija,
+                psihozak:this.psihozak
+
+              }
+
+              axios.put('/babycards/'+this.babycardid, data)
+              .then(function (response) {
+                console.log(response);
+              })
+              .catch(function (error) {
+                console.log(error);
+              })
+              .then(function () {
+                // always executed
+              });
+
+              var ev = this.getEvent('save')
 
                 this.$emit('save', ev)
 

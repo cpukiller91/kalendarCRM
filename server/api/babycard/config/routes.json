@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/babycards",
+      "handler": "babycard.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/babycards/count",
+      "handler": "babycard.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/babycards/:id",
+      "handler": "babycard.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/babycards",
+      "handler": "babycard.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/babycards/:id",
+      "handler": "babycard.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/babycards/:id",
+      "handler": "babycard.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/usergroups",
+      "handler": "usergroup.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/usergroups/count",
+      "handler": "usergroup.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/usergroups/:id",
+      "handler": "usergroup.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/usergroups",
+      "handler": "usergroup.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/usergroups/:id",
+      "handler": "usergroup.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/usergroups/:id",
+      "handler": "usergroup.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "logopeds",
+  "info": {
+    "name": "Logoped"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "characteristics": {
+      "type": "string"
+    },
+    "associated": {
+      "type": "string"
+    },
+    "logoactual": {
+      "type": "string"
+    },
+    "babycard": {
+      "via": "logopeds",
+      "model": "babycard"
+    }
+  }
+}

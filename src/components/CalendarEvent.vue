@@ -19,16 +19,8 @@
         <span v-if="showName">
           <slot name="eventTitle" v-bind="{calendarEvent, hasPrefix, getPrefix, details}">
 
-            <v-icon class="ds-ev-icon"
-                    v-if="hasIcon"
-                    size="14"
-                    :style="{color: details.forecolor}">
-              <!-- {{ details.icon }} -->
-              coronavirus
-            </v-icon>
-            <span v-if="hasPrefix">
-              {{ getPrefix }}
-            </span>
+
+
             <strong class="ds-ev-title">{{ displayName }}</strong>
             <!-- <span class="ds-ev-description">{{ details.description }}</span> -->
 
@@ -142,9 +134,7 @@ export default {
 
             displayName () {
                 let res = this.details.title
-                if (this.details.icon !== ''){
-                    res += ' ' + this.details.icon
-                }
+
                 return res.trim()
             }
         },

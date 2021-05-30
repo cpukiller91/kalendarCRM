@@ -7,16 +7,25 @@
                    :style="styleHeader">
 
             <v-toolbar-title slot="extension">
-
+<!--
                 <v-text-field single-line hide-details solo flat autofocus
                     :label="labels.title"
                     v-model="details.title">
                 </v-text-field>
+                -->
+              <v-select
+                  :items="personal"
+                  label="Standard"
+                  :color="personal.color"
+                  v-model="details.title"
+                  v-on:change="onChangeDoc"
+              ></v-select>
 
             </v-toolbar-title>
             <!--Button edit--->
             <v-btn
-                v-if="!details.readonly"
+                v-if="!details.readonly && details.title"
+
                 color="secondary"
                 small absolute bottom left fab icon
                 @click="edit" style="background-color: #424242!important; color: #fff!important;">
@@ -69,6 +78,7 @@
                         <v-icon>access_time</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content class="py-0">
+
                         <slot name="eventCreatePopoverOccurs" v-bind="slotData">
                             <v-list-item-title>{{ startDate }}</v-list-item-title>
                             <v-list-item-subtitle>{{ occurs }}</v-list-item-subtitle>
@@ -126,7 +136,7 @@
                         </slot>
                     </v-list-item-content>
                 </v-list-item>
-
+<!--
                 <v-list-item v-if="prompts.color && $dayspan.supports.color">
                     <v-list-item-avatar>
                         <v-icon>invert_colors</v-icon>
@@ -153,7 +163,7 @@
                 <v-list-item v-if="prompts.icon && $dayspan.supports.icon">
 
                   <v-list-item-avatar>
-                    <!--<v-icon>{{ details.icon || 'help' }}</v-icon>-->
+
                    <v-icon>coronavirus</v-icon>
                   </v-list-item-avatar>
 
@@ -179,7 +189,7 @@
                   </v-list-item-content>
 
              </v-list-item>
-
+-->
              <v-list-item v-if="prompts.busy && $dayspan.supports.busy">
                  <v-list-item-avatar>
                      <v-icon>work</v-icon>
@@ -211,6 +221,8 @@
 
 <script>
 import { CalendarEvent, Calendar, Pattern, Functions as fn } from 'custom-dayspan'
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:1337";
 
 export default {
 
@@ -317,6 +329,10 @@ export default {
          startDate () {
              return this.calendarEvent.start.format(this.formats.start)
          },
+        startDateForm () {
+          //"2021-03-09"
+           return this.calendarEvent.start.format("Y-MM-DD")
+         },
 
          busyness () {
              return this.details.busy ? this.labels.busy : this.labels.free
@@ -341,10 +357,33 @@ export default {
      },
 
  data: vm => ({
-     details: vm.buildDetails()
+   details: vm.buildDetails(),
+   personal:[]
  }),
  mounted (){
      // Set default duration to be consistent with default icon selection for virus
+    console.log(this.startDate,this.formats.start);
+     axios.get('/users', {})
+         .then(response => {
+           this.alert = false;
+           var item = [];
+           var c = 0;
+           // var  LoginData = JSON.parse(localStorage.getItem('login'));
+           //console.log(response.data);
+           response.data.forEach((element) => {
+             item[c] = element.username;
+             c++;
+             //console.log(element.username)
+
+           })
+           //console.log(item);
+           this.personal = item;
+
+         })
+         .catch(error => {
+           console.log(error);
+           //this.alert = true;
+         });
      this.calendarEvent.fullDay = false
      this.calendarEvent.schedule.durationUnit = "day"
      this.calendarEvent.schedule.duration = 1
@@ -352,6 +391,14 @@ export default {
  },
  methods:
      {
+       onChangeDoc (){
+        axios.get('/users', {params:{username:this.details.title}})
+        .then(response => {
+          this.details.color = response.data[0].usergroup.color;
+          //console.log(response.data[0].usergroup.color);
+          //this.edit();
+        })
+       },
          onChangeIcon (){
            switch (this.details.icon) {
              case 'virus':
@@ -376,7 +423,7 @@ export default {
                  this.calendarEvent.schedule.durationUnit = "day"
                  this.calendarEvent.schedule.duration = 1
                  this.calendarEvent.schedule.times = []
-                 this.details.color = "#00BCD4"
+                 this.details.color = "#bf00cd"
                  break
            }
          },
@@ -389,37 +436,53 @@ export default {
          },
 
          save () {
+           var data = {
+             Title:this.details.title,
+             date:this.startDateForm,
+             color:this.details.color
+           }
+
+           axios.post('/babycards/', data)
+           .then(response => {
+             console.log(response);
+
              let ev = this.getEvent('creating')
 
              this.$emit('creating', ev)
 
              if (!ev.handled && ev.details && ev.calendarEvent) {
-                 ev.created = ev.calendarEvent.event
+               ev.created = ev.calendarEvent.event
 
-                 this.$dayspan.setEventDetails(
-                     ev.details,
-                     ev.created.data,
-                     ev.created,
-                     ev.calendarEvent
-                 )
+               this.$dayspan.setEventDetails(
+                   ev.details,
+                   ev.created.data,
+                   ev.created,
+                   ev.calendarEvent
+               )
 
-                 if (ev.calendar) {
-                     ev.calendar.addEvent(ev.created)
-                     ev.added = true
-                 }
+               if (ev.calendar) {
+                 ev.calendar.addEvent(ev.created)
+                 ev.added = true
+               }
+               //
+               this.$emit('created', ev)
 
-                 this.$emit('created', ev)
+               if (ev.calendar && ev.refresh) {
+                 ev.calendar.refreshEvents()
+               }
 
-                 if (ev.calendar && ev.refresh) {
-                     ev.calendar.refreshEvents()
-                 }
+               ev.handled = true
 
-                 ev.handled = true
-
-                 this.$emit('event-create', ev.created)
+               this.$emit('event-create', ev.created)
              }
-
+             //
              this.finishEvent(ev)
+           })
+           .catch(function (error) {
+             console.log(error);
+           });
+
+
          },
 
          finishEvent (ev) {

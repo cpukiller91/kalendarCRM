@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/logopeds",
+      "handler": "logoped.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/logopeds/count",
+      "handler": "logoped.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/logopeds/:id",
+      "handler": "logoped.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/logopeds",
+      "handler": "logoped.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/logopeds/:id",
+      "handler": "logoped.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/logopeds/:id",
+      "handler": "logoped.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

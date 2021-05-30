@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/simpsihologs",
+      "handler": "simpsiholog.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/simpsihologs/count",
+      "handler": "simpsiholog.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/simpsihologs/:id",
+      "handler": "simpsiholog.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/simpsihologs",
+      "handler": "simpsiholog.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/simpsihologs/:id",
+      "handler": "simpsiholog.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/simpsihologs/:id",
+      "handler": "simpsiholog.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
