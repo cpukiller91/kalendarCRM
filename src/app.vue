@@ -133,13 +133,14 @@ axios.defaults.baseURL = "http://localhost:1337";
 
 export default {
     name: 'dayspan',
+
     data: vm => ({
         logIn:false,
         alert: false,
         identifier: 'user1@rambler.ru',
         password: '!4L@mer90',
         //username:"Павлова Наталья Николаевна",
-        storeKey: 'dayspanState1',
+        storeKey: 'dayspanState',
         calendar: Calendar.months(),
         readOnly: false,
         nav: true,
@@ -151,43 +152,31 @@ export default {
             {value: 'de', text: 'German'},
             {value: 'nl', text: 'Dutch'}
         ],
-        defaultEvents: [
+      defaultEvents: [
 
-            {
-                data: {
-                    title: 'Veterans Day',
-                    color: '#2196F3',
-                    calendar: 'US Holidays'
-                },
-                schedule: {
-                    month: [Month.NOVEMBER],
-                    dayOfMonth: [11]
-                }
-            },
-            {
-                data: {
-                    title: 'Thanksgiving Day',
-                    color: '#2196F3',
-                    calendar: 'US Holidays'
-                },
-                schedule: {
-                    month: [Month.NOVEMBER],
-                    dayOfWeek: [Weekday.THURSDAY],
-                    weekspanOfMonth: [3]
-                }
-            },
-            {
-                data: {
-                    title: 'Christmas Day',
-                    color: '#2196F3',
-                    calendar: 'US Holidays'
-                },
-                schedule: {
-                    month: [Month.DECEMBER],
-                    dayOfMonth: [25]
-                }
-            }
-        ]
+        {
+          data: {
+            title: 'Weekly Meeting',
+            color: '#3F51B5'
+          },
+          schedule: {
+            month: [4],
+            dayOfMonth: [15], //times: [9],
+            //duration: 30,
+            //durationUnit: 'minutes'
+          }
+        },
+        {
+          data: {
+            title: 'Weekly Meeting',
+            color: '#3F51B5'
+          },
+          schedule: {
+            month: [5],
+            dayOfMonth: [15],
+          }
+        }
+      ]
     }),
     mounted () {
 
@@ -198,8 +187,15 @@ export default {
         this.readOnly = LoginData.user.usergroup.readOnly,
         window.app = this.$refs.app
         this.nav = true;
-        //this.loadState()
-        console.log(LoginData);
+        axios.get('/babycards', {params:{}})
+        .then(response => {
+          console.log("Card load");
+          this.loadState ();
+          console.log(response.data);
+          //this.edit();
+        });
+
+
       }
 
 
@@ -265,6 +261,7 @@ export default {
                 localStorage.setItem(this.storeKey, json)
             },
             loadState () {
+
                 let state = {}
                 try {
                     let savedState = JSON.parse(localStorage.getItem(this.storeKey))
@@ -278,10 +275,8 @@ export default {
                 if (!state.events || !state.events.length) {
                     state.events = this.defaultEvents
                 }
-                let defaults = this.$dayspan.getDefaultEventDetails()
-                state.events.forEach(ev => {
-                    ev.data = dsMerge(ev.data, defaults)
-                })
+
+                //console.log("Load stale",this.defaultEvents)
                 this.$refs.app.setState(state)
             }
         }

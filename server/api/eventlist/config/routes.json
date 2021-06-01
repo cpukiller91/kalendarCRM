@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/eventlists",
+      "handler": "eventlist.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/eventlists/count",
+      "handler": "eventlist.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/eventlists/:id",
+      "handler": "eventlist.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/eventlists",
+      "handler": "eventlist.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/eventlists/:id",
+      "handler": "eventlist.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/eventlists/:id",
+      "handler": "eventlist.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

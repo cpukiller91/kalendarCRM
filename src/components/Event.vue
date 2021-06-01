@@ -1539,7 +1539,7 @@ export default {
                 return this.readOnly || this.$dayspan.readOnly
             }
         },
-    mounted () {
+     mounted () {
 
         var LoginData = JSON.parse(localStorage.getItem('login'));
         axios.get('/users', {params:{username:LoginData.user.username}})
@@ -1550,11 +1550,13 @@ export default {
           this.famili = response.data[0].usergroup.famili;
           this.logos = response.data[0].usergroup.logos;
           this.psiho = response.data[0].usergroup.psiho;
+
           //this.details.color = response.data[0].usergroup.color;
-          console.log(response);
+          //console.log(response);
+          this.reload();
           //this.edit();
         });
-        this.reload();
+        //
 
 
     },
@@ -1643,19 +1645,19 @@ export default {
             });
             console.log("Save SimPsiholog")
           },
+
           reload(){
             axios.get('/babycards/', {params:{Title:this.details.title,date:this.calendarEvent.start.format("Y-MM-DD")}})
             .then(response => {
-              console.log("Card load");
+              console.log("Card reload");
               this.babycardid = response.data[0].id;
               this.defectologs = response.data[0].defectologs;
               this.logopeds = response.data[0].logopeds;
               this.psiholog = response.data[0].psihologs;
               this.simpsiholog = response.data[0].simpsihologs;
 
-              console.log(response.data);
-              //this.edit();
             })
+
           },
             onChangeIcon (){
               switch (this.details.icon) {

@@ -442,7 +442,7 @@ export default {
              color:this.details.color
            }
 
-           axios.post('/babycards/', data)
+           axios.post('/babycards', data)
            .then(response => {
              console.log(response);
 

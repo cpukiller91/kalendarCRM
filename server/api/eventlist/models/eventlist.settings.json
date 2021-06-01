@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "eventlists",
+  "info": {
+    "name": "Eventlist"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "month": {
+      "type": "integer"
+    },
+    "dayOfMonth": {
+      "type": "integer"
+    }
+  }
+}
