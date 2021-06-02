@@ -547,7 +547,7 @@
                                       <slot name="scheduleSave" v-bind="{hasSave, save, labels, readOnly}">
 
                                         <v-btn
-                                            v-if="!isReadOnly"
+                                            v-if="AddCard"
                                             class="ds-button-tall ml-3 mt-0 mb-2" depressed
                                             color="primary"
                                             :disabled="!canSave"
@@ -1317,6 +1317,7 @@ export default {
         },
 
     data: vm => ({
+      AddCard: false,
         tab: 'details',
         babycardid:null,
         defectologs:[],
@@ -1369,49 +1370,49 @@ export default {
         logoSopnar:null,
         logoActual:null,
 
-        psihozak:"Неустойчивое психологическое состояние с тенденцией к сниженному у инфантильной внушаемой девушки в ситуации госпитализации.",
+        psihozak:"",
         stadijaList:["З","Р","О","П"],
-        stadija:"Р",
+        stadija:"",
         tiajestList:["З","Л","С","Т"],
-        tiajest:"С",
+        tiajest:"",
         dnList:["Д","Н"],
-        zabjadn:"Н",
-        narzrendn:"Н",
-        narsluhdn:"Н",
-        genetnasdn:"Н",
-        porkdn:"Н",
-        zapnsdn:"Н",
+        zabjadn:"",
+        narzrendn:"",
+        narsluhdn:"",
+        genetnasdn:"",
+        porkdn:"",
+        zapnsdn:"",
 
         drList:["Д","Р"],
-        dr:"Д",
-        sikrange:"10m",
-        firstdiagnoz:"ХДПН",
-        lastdiagnoz:"Медикаментозный гиперкортицизм.",
-        dadtel:"+380955611757",
-        dadfio:"Имя Папы Фамилия",
-        momtel:"+380955611757",
-        momfio:"Имя Мамы Фамилия",
-        desc:"Голубева",
-        consaltfio:"Голубева",
-        servicetype:"Конс.",
+        dr:"",
+        sikrange:"",
+        firstdiagnoz:"",
+        lastdiagnoz:"",
+        dadtel:"",
+        dadfio:"",
+        momtel:"",
+        momfio:"",
+        desc:"",
+        consaltfio:"",
+        servicetype:"",
         finsrcList:["ВМП","ПМУ","ОМС"],
-        finsrc:"ВМП",
-        ibn:"44/21",
-        city:"РФ",
-        Otdelenije:"ОПНД",
-        age:"12л6м",
+        finsrc:"",
+        ibn:"",
+        city:"",
+        Otdelenije:"",
+        age:"",
 
-        mamf:"Пупкина",
-        mami:"Иванка",
-        mamo:"Ивановна",
+        mamf:"",
+        mami:"",
+        mamo:"",
 
-        dadf:"Пупкин",
-        dadi:"Иван",
-        dado:"Иванович",
+        dadf:"",
+        dadi:"",
+        dado:"",
 
-        kidf:"Пупкин",
-        kidi:"Иван",
-        kido:"Иванович",
+        kidf:"",
+        kidi:"",
+        kido:"",
 
         OtdelenijeList:["ОПРДВ","ОПНД","ОЗПТ","ОДВЛ (ВИП)","ОСЗТ","У(ОКМП)","КДЦ" ],
         parentingAttitude:["личностно-ориентированная","на обучение", "на лечение", "отстраненная"],
@@ -1422,9 +1423,9 @@ export default {
         MotivationalSphere:["норма", "инф", "суж", "девиант", "искаж"],
 
         AssociatedViolations:["дизартрия", "диз.симпт.", "заикание", "алалия", "афазия", "наруш.письма", "чтения"],
-        associated:"дизартрия",
+        associated:"",
         CharacteristicsSpeech:["норма", "задер.", "особ.ф.р.", "наруш.фор.р./ ОНР/системн.н.р. + уровни"],
-        characteristics:"норма",
+        characteristics:"",
 
         directionsRehabilitation:["структирирование режима дня", "эмоциональная поддержка", "информирование", "оптимизация взаимодействия с медицинским персоналом", "повышение комлаентности", "неотложная психологическая помощь", "семейное консультирование"],
         additionalStressors:["есть", "нет"],
@@ -1469,6 +1470,14 @@ export default {
 
     computed:
         {
+          dayOfMonth () {
+            //"2021-03-09"
+            return this.calendarEvent.start.format("DD")
+          },
+          month () {
+            //"2021-03-09"
+            return this.calendarEvent.start.format("MM")
+          },
             startDateForm () {
               //"2021-03-09"
               return this.calendarEvent.start.format("Y-MM-DD")
@@ -1542,6 +1551,7 @@ export default {
      mounted () {
 
         var LoginData = JSON.parse(localStorage.getItem('login'));
+        this.AddCard = LoginData.user.usergroup.addCard
         axios.get('/users', {params:{username:LoginData.user.username}})
         .then(response => {
           console.log("User load");
@@ -1556,7 +1566,8 @@ export default {
           this.reload();
           //this.edit();
         });
-        //
+
+
 
 
     },
@@ -1647,16 +1658,72 @@ export default {
           },
 
           reload(){
-            axios.get('/babycards/', {params:{Title:this.details.title,date:this.calendarEvent.start.format("Y-MM-DD")}})
+            axios.get('/eventlists/', {
+              params:{title:this.details.title,
+                month:this.month,
+                dayOfMonth:this.dayOfMonth}})
             .then(response => {
-              console.log("Card reload");
-              this.babycardid = response.data[0].id;
-              this.defectologs = response.data[0].defectologs;
-              this.logopeds = response.data[0].logopeds;
-              this.psiholog = response.data[0].psihologs;
-              this.simpsiholog = response.data[0].simpsihologs;
 
+              console.log("Card reload");
+              this.babycardid = response.data[0].babycard.id;
+
+
+              console.log(response.data[0].babycard.id)
+
+              axios.get('/babycards/'+response.data[0].babycard.id,)
+                .then(resp => {
+                  response = resp.data;
+                  //console.log("babycards",response);
+                  this.defectologs = response.defectologs;
+                  this.logopeds = response.logopeds;
+                  this.psiholog = response.psihologs;
+                  this.simpsiholog = response.simpsihologs;
+                  this.age = response.age;
+                  this.Otdelenije = response.otdelenije;
+
+                  this.date = response.date;
+                  this.kidf = response.kidf;
+                  this.kidi = response.kidi;
+                  this.kido = response.kido;
+
+                  this.mamf = response.mamf;
+                  this.mami = response.mami;
+                  this.mamo = response.mamo;
+                  this.momtel = response.momtel;
+                  this.dadtel = response.dadtel;
+
+                  this.dadf = response.dadf;
+                  this.dadi = response.dadi;
+                  this.dado = response.dado;
+
+                  this.city = response.city
+                  this.ibn = response.ibn
+                  this.finsrc = response.finsrc
+                  this.servicetype = response.servicetype
+                  this.consaltfio = response.consaltfio
+                  this.desc = response.desc;
+
+                  this.lastdiagnoz = response.lastdiagnoz;
+                  this.firstdiagnoz = response.firstdiagnoz;
+                  this.sikrange = response.sikrange;
+                  this.dr = response.dr;
+                  this.zapnsdn = response.zapnsdn;
+                  this.porkdn = response.porkdn;
+                  this.genetnasdn = response.genetnasdn;
+                  this.narsluhdn = response.narsluhdn;
+                  this.narzrendn = response.narzrendn;
+                  this.zabjadn = response.zabjadn;
+                  this.tiajest = response.tiajest;
+                  this.stadija = response.stadija;
+                  this.psihozak = response.psihozak;
+
+
+                })
+                .catch(function (error) {
+                  console.log(error);
+                })
             })
+
 
           },
             onChangeIcon (){
@@ -1709,7 +1776,7 @@ export default {
                 dadf:this.dadf,
                 dadi:this.dadi,
                 dado:this.dadi,
-
+                age:this.age,
                 city:this.city,
                 ibn:this.ibn,
                 finsrc:this.finsrc,

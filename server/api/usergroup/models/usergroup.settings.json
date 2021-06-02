@@ -35,6 +35,9 @@
     },
     "famili": {
       "type": "boolean"
+    },
+    "addCard": {
+      "type": "boolean"
     }
   }
 }

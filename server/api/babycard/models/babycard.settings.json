@@ -16,10 +16,6 @@
       "type": "date",
       "required": true
     },
-    "Title": {
-      "type": "string",
-      "required": true
-    },
     "color": {
       "type": "string"
     },
@@ -128,6 +124,12 @@
     "simpsihologs": {
       "via": "babycard",
       "collection": "simpsiholog"
+    },
+    "age": {
+      "type": "string"
+    },
+    "sikrange": {
+      "type": "string"
     }
   }
 }

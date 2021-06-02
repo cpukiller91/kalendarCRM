@@ -1,6 +1,6 @@
 <template>
 
-    <v-card class="ds-calendar-event-popover-card"
+    <v-card v-if="AddCard" class="ds-calendar-event-popover-card"
             :class="classes">
 
         <v-toolbar extended flat
@@ -15,7 +15,7 @@
                 -->
               <v-select
                   :items="personal"
-                  label="Standard"
+                  label="Вибрать сециалиста"
                   :color="personal.color"
                   v-model="details.title"
                   v-on:change="onChangeDoc"
@@ -75,14 +75,22 @@
 
                 <v-list-item>
                     <v-list-item-avatar>
-                        <v-icon>access_time</v-icon>
+
                     </v-list-item-avatar>
                     <v-list-item-content class="py-0">
-
+                      <v-select
+                          :items="itemCardKids"
+                          label="Карточка ребенка"
+                          v-model="babycard"
+                          item-text="title"
+                          item-value="id"
+                          v-on:change="onChangeKid"
+                      ></v-select>
                         <slot name="eventCreatePopoverOccurs" v-bind="slotData">
                             <v-list-item-title>{{ startDate }}</v-list-item-title>
                             <v-list-item-subtitle>{{ occurs }}</v-list-item-subtitle>
                         </slot>
+
                     </v-list-item-content>
                 </v-list-item>
 
@@ -298,6 +306,7 @@ export default {
 
  computed:
      {
+
          slotData () {
              return {
                  calendarEvent: this.calendarEvent,
@@ -329,10 +338,18 @@ export default {
          startDate () {
              return this.calendarEvent.start.format(this.formats.start)
          },
-        startDateForm () {
+       dayOfMonth () {
           //"2021-03-09"
-           return this.calendarEvent.start.format("Y-MM-DD")
+           return this.calendarEvent.start.format("DD")
          },
+       month () {
+         //"2021-03-09"
+         return this.calendarEvent.start.format("MM")
+       },
+       startDateForm () {
+         //"2021-03-09"
+         return this.calendarEvent.start.format("Y-MM-DD")
+       },
 
          busyness () {
              return this.details.busy ? this.labels.busy : this.labels.free
@@ -358,32 +375,61 @@ export default {
 
  data: vm => ({
    details: vm.buildDetails(),
-   personal:[]
+   personal:[],
+   itemCardKids:[],
+   babycard:null,
+   AddCard: false
  }),
  mounted (){
      // Set default duration to be consistent with default icon selection for virus
-    console.log(this.startDate,this.formats.start);
+    //console.log(this.startDate,this.formats.start);
+   var LoginData = JSON.parse(localStorage.getItem('login'));
+   this.AddCard = LoginData.user.usergroup.addCard
      axios.get('/users', {})
-         .then(response => {
-           this.alert = false;
-           var item = [];
-           var c = 0;
-           // var  LoginData = JSON.parse(localStorage.getItem('login'));
-           //console.log(response.data);
-           response.data.forEach((element) => {
-             item[c] = element.username;
-             c++;
-             //console.log(element.username)
+     .then(response => {
+       this.alert = false;
+       var item = [];
+       var c = 0;
+       // var  LoginData = JSON.parse(localStorage.getItem('login'));
+       //console.log(response.data);
+       response.data.forEach((element) => {
+         item[c] = element.username;
+         c++;
+         //console.log(element.username)
 
-           })
-           //console.log(item);
-           this.personal = item;
+       })
+       //console.log(item);
+       this.personal = item;
+
+     })
+     .catch(error => {
+       console.log(error);
+       //this.alert = true;
+     });
+
+    axios.get('/babycards', {})
+       .then(response => {
+
+         var itemCard = [];
+         var c = 0;
+         // var  LoginData = JSON.parse(localStorage.getItem('login'));
+         //console.log(response.data);
+         response.data.forEach((element) => {
+           itemCard[c] = {
+             "title":element.kidf+" "+element.kidi+" "+element.kido,
+             "id":element.id};
+           c++;
+           //console.log(element.username)
 
          })
-         .catch(error => {
-           console.log(error);
-           //this.alert = true;
-         });
+         console.log(itemCard);
+         this.itemCardKids = itemCard;
+
+       })
+       .catch(error => {
+         console.log(error);
+         //this.alert = true;
+       });
      this.calendarEvent.fullDay = false
      this.calendarEvent.schedule.durationUnit = "day"
      this.calendarEvent.schedule.duration = 1
@@ -391,6 +437,9 @@ export default {
  },
  methods:
      {
+       onChangeKid(){
+
+       },
        onChangeDoc (){
         axios.get('/users', {params:{username:this.details.title}})
         .then(response => {
@@ -437,12 +486,14 @@ export default {
 
          save () {
            var data = {
-             Title:this.details.title,
-             date:this.startDateForm,
-             color:this.details.color
+             title:this.details.title,
+             month:this.month,
+             dayOfMonth:this.dayOfMonth,
+             color:this.details.color,
+             babycard:this.babycard
            }
 
-           axios.post('/babycards', data)
+           axios.post('/eventlists', data)
            .then(response => {
              console.log(response);
 

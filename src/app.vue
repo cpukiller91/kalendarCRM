@@ -143,6 +143,7 @@ export default {
         storeKey: 'dayspanState',
         calendar: Calendar.months(),
         readOnly: false,
+        AddCard: false,
         nav: true,
         currentLocale: vm.$dayspan.currentLocale,
         locales: [
@@ -152,48 +153,43 @@ export default {
             {value: 'de', text: 'German'},
             {value: 'nl', text: 'Dutch'}
         ],
-      defaultEvents: [
-
-        {
-          data: {
-            title: 'Weekly Meeting',
-            color: '#3F51B5'
-          },
-          schedule: {
-            month: [4],
-            dayOfMonth: [15], //times: [9],
-            //duration: 30,
-            //durationUnit: 'minutes'
-          }
-        },
-        {
-          data: {
-            title: 'Weekly Meeting',
-            color: '#3F51B5'
-          },
-          schedule: {
-            month: [5],
-            dayOfMonth: [15],
-          }
-        }
-      ]
+      defaultEvents: []
     }),
     mounted () {
+      localStorage.removeItem("dayspanState")
+      axios.get('/eventlists', {params:{}})
+          .then(response => {
+            response.data.forEach((element) => {
+              //console.log(element)
 
+              this.defaultEvents.push({
+                data: {
+                  title: element.title,
+                  color: element.color
+                },
+                schedule: {
+                  month: [element.month-1],
+                  dayOfMonth: [element.dayOfMonth],
+                }
+              })
+            })
+
+            console.log("Eventlists load");
+            this.loadState ();
+            console.log(response.data);
+            //this.edit();
+          });
       console.log("-->",typeof localStorage.getItem('login'), localStorage.getItem('login'))
       if(localStorage.getItem('login')){
+
         var LoginData = JSON.parse(localStorage.getItem('login'));
         this.logIn = true;
-        this.readOnly = LoginData.user.usergroup.readOnly,
+        this.readOnly = LoginData.user.usergroup.readOnly;
         window.app = this.$refs.app
+        //this.$refs.addCard = "dsdsd"
         this.nav = true;
-        axios.get('/babycards', {params:{}})
-        .then(response => {
-          console.log("Card load");
-          this.loadState ();
-          console.log(response.data);
-          //this.edit();
-        });
+
+
 
 
       }
@@ -219,6 +215,7 @@ export default {
                 let json = JSON.stringify(response.data)
                 this.logIn = true;
                 localStorage.setItem("login", json)
+                window.location.href = '/'
               }
 
 
@@ -233,7 +230,7 @@ export default {
             //this.$v.$reset()
             this.login = ''
             this.pass = ''
-
+            localStorage.removeItem(this.storeKey)
             localStorage.setItem("login", '')
           },
 
