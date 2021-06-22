@@ -686,8 +686,8 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="kidf"
-
+                                v-model="item.kidf"
+                                readonly
                                 label="Фамилия ребенка"
                                 required
                             ></v-text-field>
@@ -699,8 +699,8 @@
                           >
 
                             <v-text-field
-                                v-model="kidi"
-
+                                v-model="item.kidi"
+                                readonly
                                 label="Имя ребенка"
                                 required
                             ></v-text-field>
@@ -711,7 +711,8 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="kido"
+                                readonly
+                                v-model="item.kido"
                                 label="Отчество ребенка"
                                 required
                             ></v-text-field>
@@ -723,47 +724,13 @@
                               cols="12"
                               md="4"
                           >
-                            <v-menu
-                                ref="menu"
-                                v-model="menu"
-                                :close-on-content-click="false"
-                                :return-value.sync="date"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="auto"
-                            >
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                    v-model="date"
+                            <v-text-field
+                                    v-model="item.date"
                                     label="Дата Рождения"
                                     prepend-icon="mdi-calendar"
                                     readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                                ></v-text-field>
-                              </template>
-                              <v-date-picker
-                                  v-model="date"
-                                  no-title
-                                  scrollable
-                              >
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    text
-                                    color="primary"
-                                    @click="menu = false"
-                                >
-                                  Cancel
-                                </v-btn>
-                                <v-btn
-                                    text
-                                    color="primary"
-                                    @click="$refs.menu.save(date)"
-                                >
-                                  OK
-                                </v-btn>
-                              </v-date-picker>
-                            </v-menu>
+
+                            ></v-text-field>
 
                           </v-col>
 
@@ -772,10 +739,10 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="momtel"
-
+                                v-model="item.momtel"
+                                readonly
                                 label="Телефон Мамы"
-                                required
+
                             ></v-text-field>
                           </v-col>
 
@@ -784,9 +751,9 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="age"
+                                v-model="item.age"
                                 label="Возраст"
-                                required
+                                readonly
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -797,10 +764,10 @@
                               md="4"
                           >
                             <v-select
-                                :items="cityList"
+                                :items="item.cityList"
                                 label="Город"
                                 v-model="city"
-                                required
+                                readonly
                             ></v-select>
 
                           </v-col>
@@ -812,8 +779,8 @@
                             <v-select
                                 :items="OtdelenijeList"
                                 label="Отделение"
-                                v-model="Otdelenije"
-                                required
+                                v-model="item.Otdelenije"
+                                readonly
                             ></v-select>
 
                           </v-col>
@@ -823,10 +790,10 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="ibn"
+                                v-model="item.ibn"
 
                                 label="№ и/б"
-                                required
+                                readonly
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -839,8 +806,8 @@
                             <v-select
                                 :items="finsrcList"
                                 label="Источн финансирования"
-                                v-model="finsrc"
-                                required
+                                v-model="item.finsrc"
+                                readonly
                             ></v-select>
 
                           </v-col>
@@ -852,8 +819,8 @@
                             <v-select
                                 :items="ServiceList"
                                 label="Вид услуги"
-                                v-model="servicetype"
-                                required
+                                v-model="item.servicetype"
+                                readonly
                             ></v-select>
 
                           </v-col>
@@ -863,9 +830,9 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="consaltfio"
+                                v-model="item.consaltfio"
                                 label="ФИО консультанта"
-                                required
+                                readonly
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -877,8 +844,9 @@
                           >
                             <v-textarea
                                 label="Примечание (неявка или др.)"
-                                v-model="desc"
+                                v-model="item.desc"
                                 hint="Hint text"
+                                readonly
                             ></v-textarea>
 
                           </v-col>
@@ -896,9 +864,9 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="dadtel"
+                                v-model="item.dadtel"
                                 label="Телефон Папы"
-                                required
+                                readonly
                             ></v-text-field>
 
                           </v-col>
@@ -908,9 +876,9 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="firstdiagnoz"
+                                v-model="item.firstdiagnoz"
                                 label="Клинический диагноз"
-                                required
+                                readonly
                             ></v-text-field>
 
                           </v-col>
@@ -920,10 +888,10 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="lastdiagnoz"
+                                v-model="item.lastdiagnoz"
 
                                 label="Сопутствующий диагноз (данные анамнеза, заключение спец-та, результ. инструмен. обслед. оперативные вмеш.)"
-                                required
+                                readonly
                             ></v-text-field>
                           </v-col>
                         </v-row>
@@ -934,11 +902,11 @@
                               md="4"
                           >
                             <v-text-field
-                                v-model="sikrange"
+                                v-model="item.sikrange"
 
                                 :counter="10"
                                 label="дл-ть бол-ни"
-                                required
+                                readonly
                             ></v-text-field>
                           </v-col>
 
@@ -949,8 +917,8 @@
                             <v-select
                                 :items="drList"
                                 label="Д или Р"
-                                v-model="dr"
-                                required
+                                v-model="item.dr"
+                                readonly
                             ></v-select>
                           </v-col>
 
@@ -961,8 +929,8 @@
                             <v-select
                                 :items="dnList"
                                 label="Заб.н.с. (ЦНС)"
-                                v-model="zapnsdn"
-                                required
+                                v-model="item.zapnsdn"
+                                readonly
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -975,8 +943,8 @@
                             <v-select
                                 :items="dnList"
                                 label="Врожд пороки развития"
-                                v-model="porkdn"
-                                required
+                                v-model="item.porkdn"
+                                readonly
                             ></v-select>
                           </v-col>
 
@@ -987,8 +955,8 @@
                             <v-select
                                 :items="dnList"
                                 label="Генет и наслед б-ни "
-                                v-model="genetnasdn"
-                                required
+                                v-model="item.genetnasdn"
+                                readonly
                             ></v-select>
                           </v-col>
 
@@ -999,8 +967,8 @@
                             <v-select
                                 :items="dnList"
                                 label="Нарушение слуха"
-                                v-model="narsluhdn"
-                                required
+                                v-model="item.narsluhdn"
+                                readonly
                             ></v-select>
                           </v-col>
                         </v-row>
@@ -1013,8 +981,8 @@
                             <v-select
                                 :items="dnList"
                                 label="Нарушение зрения"
-                                v-model="narzrendn"
-                                required
+                                v-model="item.narzrendn"
+                                readonly
                             ></v-select>
                           </v-col>
 
@@ -1025,8 +993,8 @@
                             <v-select
                                 :items="tiajestList"
                                 label="Тяжесть б-ни"
-                                v-model="tiajest"
-                                required
+                                v-model="item.tiajest"
+                                readonly
                             ></v-select>
                           </v-col>
 
@@ -1037,8 +1005,8 @@
                             <v-select
                                 :items="stadijaList"
                                 label="Стадия б-ни"
-                                v-model="stadija"
-                                required
+                                v-model="item.stadija"
+                                readonly
                             ></v-select>
                           </v-col>
                           <v-col
@@ -1048,8 +1016,8 @@
                             <v-select
                                 :items="dnList"
                                 label="Заб-я ОДА"
-                                v-model="zabjadn"
-                                required
+                                v-model="item.zabjadn"
+                                readonly
                             ></v-select>
                           </v-col>
 
@@ -1061,8 +1029,9 @@
                           >
                             <v-textarea
                                 label="Психолого-педагогическое заключение"
-                                v-model="psihozak"
+                                v-model="item.psihozak"
                                 hint="Hint text"
+                                readonly
                             ></v-textarea>
 
                           </v-col>
