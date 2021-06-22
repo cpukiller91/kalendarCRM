@@ -13,7 +13,6 @@
              v-for="h in 24"
              @click.stop="addAt( h )"
             ></div>
-
         <template v-for="event in day.events">
 
             <ds-calendar-event-time

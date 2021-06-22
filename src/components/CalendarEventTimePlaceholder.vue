@@ -8,6 +8,7 @@
             :close-on-click="false"
             v-bind="popoverProps">
         <template v-slot:activator="{ on }">
+
             <ds-calendar-event-time
                     v-on="on"
                     v-bind="{$scopedSlots}"

@@ -100,7 +100,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
+<!--
                 <v-row>
                   <v-col
                       cols="12"
@@ -176,7 +176,7 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
+-->
                 <v-row>
                   <v-col
                       cols="12"
@@ -255,12 +255,13 @@
                       cols="12"
                       md="4"
                   >
-                    <v-text-field
-                        v-model="city"
-                        :counter="10"
+                    <v-select
+                        :items="cityList"
                         label="Город"
+                        v-model="city"
                         required
-                    ></v-text-field>
+                    ></v-select>
+
                   </v-col>
 
                   <v-col
@@ -307,11 +308,13 @@
                       cols="12"
                       md="4"
                   >
-                    <v-text-field
-                        v-model="servicetype"
+                    <v-select
+                        :items="ServiceList"
                         label="Вид услуги"
+                        v-model="servicetype"
                         required
-                    ></v-text-field>
+                    ></v-select>
+
                   </v-col>
 
                   <v-col
@@ -525,6 +528,551 @@
                   </v-col>
 
                 </v-row>
+
+              </v-container>
+            </v-card>
+          </v-dialog>
+        </v-row>
+      </template>
+
+      <template>
+        <v-row justify="center">
+          <v-dialog
+              v-model="dialogAll"
+              fullscreen
+              hide-overlay
+              transition="dialog-bottom-transition"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+
+                  color="success"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  @click.stop="findCard"
+              >
+                Смотреть все карточки
+              </v-btn>
+            </template>
+            <v-card>
+              <v-toolbar
+                  dark
+                  color="success"
+              >
+                <v-btn
+                    icon
+                    dark
+                    @click="dialogAll = false"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+                <v-toolbar-title>Карточки ребенка</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                  <v-btn
+                      dark
+                      text
+                      @click.stop="findCard"
+                  >
+                    Фильтровать
+                  </v-btn>
+                </v-toolbar-items>
+              </v-toolbar>
+
+              <v-divider></v-divider>
+              <v-container>
+                <v-row>
+                  <v-col
+                      cols="12"
+                      md="3"
+                  >
+                    <v-text-field
+                        v-model="kidf"
+                        @input="findCard"
+                        label="Фамилия ребенка"
+                        required
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col
+                      cols="12"
+                      md="3"
+                  >
+
+                    <v-text-field
+                        v-model="kidi"
+                        @input="findCard"
+                        label="Имя ребенка"
+                        required
+                    ></v-text-field>
+                  </v-col>
+
+                  <v-col
+                      cols="12"
+                      md="3"
+                  >
+                    <v-text-field
+                        v-model="kido"
+                        @input="findCard"
+                        label="Отчество ребенка"
+                        required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                      cols="12"
+                      md="3"
+                  >
+                    <v-menu
+                        ref="menu"
+                        v-model="menubf"
+                        :close-on-content-click="false"
+                        :return-value.sync="datebf"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+
+                            v-model="datebf"
+                            label="Дата"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                          v-model="datebf"
+                          no-title
+                          scrollable
+                      >
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="menubf = false"
+                        >
+                          Cancel
+                        </v-btn>
+                        <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(datebf);findCard();"
+                        >
+                          OK
+                        </v-btn>
+                      </v-date-picker>
+                    </v-menu>
+
+                  </v-col>
+                </v-row>
+
+
+                <template>
+                  <v-expansion-panels>
+                    <v-expansion-panel
+                        v-for="(item,i) in babycardsList"
+                        :key="i"
+                    >
+                      <v-expansion-panel-header>
+                        {{item.kidf}} {{item.kidi}} {{item.kido}}
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="kidf"
+
+                                label="Фамилия ребенка"
+                                required
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+
+                            <v-text-field
+                                v-model="kidi"
+
+                                label="Имя ребенка"
+                                required
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="kido"
+                                label="Отчество ребенка"
+                                required
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-menu
+                                ref="menu"
+                                v-model="menu"
+                                :close-on-content-click="false"
+                                :return-value.sync="date"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                    v-model="date"
+                                    label="Дата"
+                                    prepend-icon="mdi-calendar"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                  v-model="date"
+                                  no-title
+                                  scrollable
+                              >
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                    text
+                                    color="primary"
+                                    @click="menu = false"
+                                >
+                                  Cancel
+                                </v-btn>
+                                <v-btn
+                                    text
+                                    color="primary"
+                                    @click="$refs.menu.save(date)"
+                                >
+                                  OK
+                                </v-btn>
+                              </v-date-picker>
+                            </v-menu>
+
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="momtel"
+
+                                label="Телефон Мамы"
+                                required
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="age"
+                                label="Возраст"
+                                required
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="cityList"
+                                label="Город"
+                                v-model="city"
+                                required
+                            ></v-select>
+
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="OtdelenijeList"
+                                label="Отделение"
+                                v-model="Otdelenije"
+                                required
+                            ></v-select>
+
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="ibn"
+
+                                label="№ и/б"
+                                required
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="finsrcList"
+                                label="Источн финансирования"
+                                v-model="finsrc"
+                                required
+                            ></v-select>
+
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="ServiceList"
+                                label="Вид услуги"
+                                v-model="servicetype"
+                                required
+                            ></v-select>
+
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="consaltfio"
+                                label="ФИО консультанта"
+                                required
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="12"
+                          >
+                            <v-textarea
+                                label="Примечание (неявка или др.)"
+                                v-model="desc"
+                                hint="Hint text"
+                            ></v-textarea>
+
+                          </v-col>
+
+                        </v-row>
+
+                        <v-row>
+
+
+                        </v-row>
+
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="dadtel"
+                                label="Телефон Папы"
+                                required
+                            ></v-text-field>
+
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="firstdiagnoz"
+                                label="Клинический диагноз"
+                                required
+                            ></v-text-field>
+
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="lastdiagnoz"
+
+                                label="Сопутствующий диагноз (данные анамнеза, заключение спец-та, результ. инструмен. обслед. оперативные вмеш.)"
+                                required
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-text-field
+                                v-model="sikrange"
+
+                                :counter="10"
+                                label="дл-ть бол-ни"
+                                required
+                            ></v-text-field>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="drList"
+                                label="Д или Р"
+                                v-model="dr"
+                                required
+                            ></v-select>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="dnList"
+                                label="Заб.н.с. (ЦНС)"
+                                v-model="zapnsdn"
+                                required
+                            ></v-select>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="dnList"
+                                label="Врожд пороки развития"
+                                v-model="porkdn"
+                                required
+                            ></v-select>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="dnList"
+                                label="Генет и наслед б-ни "
+                                v-model="genetnasdn"
+                                required
+                            ></v-select>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="4"
+                          >
+                            <v-select
+                                :items="dnList"
+                                label="Нарушение слуха"
+                                v-model="narsluhdn"
+                                required
+                            ></v-select>
+                          </v-col>
+                        </v-row>
+
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="3"
+                          >
+                            <v-select
+                                :items="dnList"
+                                label="Нарушение зрения"
+                                v-model="narzrendn"
+                                required
+                            ></v-select>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="3"
+                          >
+                            <v-select
+                                :items="tiajestList"
+                                label="Тяжесть б-ни"
+                                v-model="tiajest"
+                                required
+                            ></v-select>
+                          </v-col>
+
+                          <v-col
+                              cols="12"
+                              md="3"
+                          >
+                            <v-select
+                                :items="stadijaList"
+                                label="Стадия б-ни"
+                                v-model="stadija"
+                                required
+                            ></v-select>
+                          </v-col>
+                          <v-col
+                              cols="12"
+                              md="3"
+                          >
+                            <v-select
+                                :items="dnList"
+                                label="Заб-я ОДА"
+                                v-model="zabjadn"
+                                required
+                            ></v-select>
+                          </v-col>
+
+                        </v-row>
+                        <v-row>
+                          <v-col
+                              cols="12"
+                              md="12"
+                          >
+                            <v-textarea
+                                label="Психолого-педагогическое заключение"
+                                v-model="psihozak"
+                                hint="Hint text"
+                            ></v-textarea>
+
+                          </v-col>
+
+                        </v-row>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                </template>
+
 
               </v-container>
             </v-card>
@@ -852,9 +1400,13 @@ export default {
     this.drawer = this.navDrawer
   },
   data: vm => ({
+    datebf:null,
+    menubf:null,
+    dialogAll:false,
     AddCard: false,
+    AllCard: false,
     menu:null,
-
+    babycardsList:[],
     dialog: false,
     username:"",
     drawer: false,
@@ -940,7 +1492,26 @@ export default {
     desc:"",
     consaltfio:"",
     servicetype:"",
-    finsrcList:["ВМП","ПМУ","ОМС"],
+    cityList:[
+      "Москва",
+      "МО",
+      "РФ",
+      "СНГ",
+      "ИГ"
+
+    ],
+    ServiceList:[
+      "Конс.",
+      "Занятие",
+      "Группа"
+
+    ],
+    finsrcList:[
+      "ВМП",
+      "ВМП-ОМС",
+      "ОМС",
+      "ПМУ"
+    ],
     finsrc:"",
     ibn:"",
     city:"",
@@ -959,7 +1530,20 @@ export default {
     kidi:"",
     kido:"",
 
-    OtdelenijeList:["ОПРДВ","ОПНД","ОЗПТ","ОДВЛ (ВИП)","ОСЗТ","У(ОКМП)","КДЦ" ],
+    OtdelenijeList:[
+      "гастроэнтерология",
+      "дерматология",
+      "кардиология",
+      "КДЦ","ЛОР","нефрология",
+      "ОПНД","ОПРДВ","ОЗПТ","ОСЗТ",
+      "психоневрология",
+      "пульмонология",
+      "реанимация",
+      "ревматология",
+      "торакальная хирургия",
+      "урология","хирургия",
+      "хирургия новорожденных"
+    ],
     parentingAttitude:["личностно-ориентированная","на обучение", "на лечение", "отстраненная"],
     formOfWork:["мониторинг", "информирование", "психообразование", "игровая терапия", "арт-терапия", "включение в продуктивную деятельность", "групповая терапия", "помощь в формировании ближайших жизненных перспектив"],
     specificDifficulties:["трудности адаптации к ситуации госпитализации", "фиксация на психофизическом дискомфорте", "конфликтное самоотношение", "негативный образ телесного Я", "трудности адаптации к новым социальным условиям в ситуации манифестации болезни", "сужение деятельности и общения в ситуации длительного хронического заболевания", "низкая комлаентность", "страхи медицинских процедур"],
@@ -1081,6 +1665,23 @@ export default {
   },
 
   methods: {
+    findCard () {
+      var data = {
+        kidf:this.kidf,
+        //kidi:this.kidi,
+        //kido:this.kido,
+      }
+      axios.get('/babycards/',{params: data})
+      .then(response => {
+        //this.dialog=false;
+        this.babycardsList = response.data;
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    },
+
     saveCard () {
       var data = {
 

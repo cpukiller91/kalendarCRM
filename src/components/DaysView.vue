@@ -30,7 +30,6 @@
                                 <div class="ds-hour-text">{{ hour }}</div>
 
                             </div>
-
                         </div>
 
                         <template v-for="day in calendar.days">
