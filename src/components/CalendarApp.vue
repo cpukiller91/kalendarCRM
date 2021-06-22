@@ -194,7 +194,7 @@
                       <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                             v-model="date"
-                            label="Дата"
+                            label="Дата Рождения"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -573,9 +573,9 @@
                   <v-btn
                       dark
                       text
-                      @click.stop="findCard"
+                      @click.stop="resetFilter"
                   >
-                    Фильтровать
+                   Сбросить Фильтр
                   </v-btn>
                 </v-toolbar-items>
               </v-toolbar>
@@ -636,7 +636,7 @@
                         <v-text-field
 
                             v-model="datebf"
-                            label="Дата"
+                            label="Дата Рождения"
                             prepend-icon="mdi-calendar"
                             readonly
                             v-bind="attrs"
@@ -735,7 +735,7 @@
                               <template v-slot:activator="{ on, attrs }">
                                 <v-text-field
                                     v-model="date"
-                                    label="Дата"
+                                    label="Дата Рождения"
                                     prepend-icon="mdi-calendar"
                                     readonly
                                     v-bind="attrs"
@@ -1665,17 +1665,28 @@ export default {
   },
 
   methods: {
+    resetFilter (){
+      this.kidf = null,
+      this.kidi = null,
+      this.kido = null,
+      this.datebf = null
+      this.findCard();
+    },
     findCard () {
       var data = {
-        kidf:this.kidf,
-        //kidi:this.kidi,
-        //kido:this.kido,
+        kidf_contains:this.kidf,
+        kidi_contains:this.kidi,
+        kido_contains:this.kido,
+        date_contains:this.datebf
+
       }
+      console.log(this.datebf);
+
       axios.get('/babycards/',{params: data})
       .then(response => {
         //this.dialog=false;
         this.babycardsList = response.data;
-        console.log(response);
+
       })
       .catch(function (error) {
         console.log(error);

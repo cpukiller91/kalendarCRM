@@ -8,7 +8,7 @@
                          @change="saveState">
 
             <template v-slot:title>
-                DaySpan
+                CDMC
             </template>
 
             <template slot="menuRight">
