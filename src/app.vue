@@ -129,7 +129,7 @@
 import { dsMerge } from './functions'
 import { Calendar, Weekday, Month, Sorts } from 'custom-dayspan'
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:1337";
+axios.defaults.baseURL = "https://admin.cdcmc.ru";
 
 export default {
     name: 'dayspan',
