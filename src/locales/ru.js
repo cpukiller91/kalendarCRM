@@ -58,7 +58,6 @@ export default {
             }
         },
         dsCalendarApp: {
-
             types: [
                 {label: 'День'},
                 {label: 'Неделя'},
