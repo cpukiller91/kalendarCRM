@@ -127,7 +127,7 @@
 
 <script>
 import { dsMerge } from './functions'
-import ru from '/src/locales/ru';
+//import ru from '/src/locales/ru';
 import { Calendar, Weekday, Month, Sorts } from 'custom-dayspan'
 import axios from "axios";
 axios.defaults.baseURL = "https://admin.cdcmc.ru";
