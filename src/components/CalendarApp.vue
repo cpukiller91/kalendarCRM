@@ -205,6 +205,7 @@
                           v-model="date"
                           no-title
                           scrollable
+                          locale="ru-RU"
                       >
                         <v-spacer></v-spacer>
                         <v-btn
@@ -212,14 +213,14 @@
                             color="primary"
                             @click="menu = false"
                         >
-                          Cancel
+                          Закрыть
                         </v-btn>
                         <v-btn
                             text
                             color="primary"
-                            @click="$refs.menu.save(date)"
+                            @click="$refs.menu.save(date);monthDiff(new Date('2000,01,01'), new Date('2013,08,02'))"
                         >
-                          OK
+                          Выбрать
                         </v-btn>
                       </v-date-picker>
                     </v-menu>
@@ -647,6 +648,7 @@
                           v-model="datebf"
                           no-title
                           scrollable
+                          locale="ru-RU"
                       >
                         <v-spacer></v-spacer>
                         <v-btn
@@ -654,14 +656,14 @@
                             color="primary"
                             @click="menubf = false"
                         >
-                          Cancel
+                          Закрыть
                         </v-btn>
                         <v-btn
                             text
                             color="primary"
                             @click="$refs.menu.save(datebf);findCard();"
                         >
-                          OK
+                          Выбрать
                         </v-btn>
                       </v-date-picker>
                     </v-menu>
@@ -1302,6 +1304,7 @@ export default {
       default: false
     },
     calendar: {
+
       type: Calendar,
       default() {
         return Calendar.months();
@@ -1543,6 +1546,7 @@ export default {
   },
 
   computed: {
+
     startDateForm () {
       //"2021-03-09"
       return new Date("Y-MM-DD");
@@ -1614,7 +1618,7 @@ export default {
   },
 
   mounted() {
-
+    //console.log("mount",this.monthDiff(new Date("2000,01,01"), new Date("2013,08,02")));
     //console.log("refsApp",this.$refs)
     if(localStorage.getItem('login')){
       var LoginData = JSON.parse(localStorage.getItem('login'));
@@ -1634,6 +1638,16 @@ export default {
   },
 
   methods: {
+    monthDiff(dateFrom, dateTo) {
+      //console.log(new Date(this.date));
+      dateFrom = new Date(this.date);
+      dateTo = new Date();
+
+      var getMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
+
+      this.age = Math.floor(getMonth  / 12)+"л"+getMonth  % 12+"м" ;
+      return Math.floor(getMonth  / 12)+"л"+getMonth  % 12+"м" ;
+    },
     resetFilter (){
       this.kidf = null,
       this.kidi = null,
@@ -1663,8 +1677,9 @@ export default {
     },
 
     saveCard () {
-      var data = {
 
+
+      var data = {
         otdelenije: this.Otdelenije,
         date:this.date,
 

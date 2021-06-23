@@ -127,6 +127,7 @@
 
 <script>
 import { dsMerge } from './functions'
+import ru from '/src/locales/ru';
 import { Calendar, Weekday, Month, Sorts } from 'custom-dayspan'
 import axios from "axios";
 axios.defaults.baseURL = "https://admin.cdcmc.ru";
@@ -145,7 +146,7 @@ export default {
         readOnly: false,
         AddCard: false,
         nav: true,
-        currentLocale: vm.$dayspan.currentLocale,
+        currentLocale: 'ru',
         locales: [
             {value: 'ru', text: 'Русский'},
             {value: 'en', text: 'English'},
@@ -248,6 +249,7 @@ export default {
                 return (sa === ea) ? (sh + ' - ' + eh + ea) : (sh + sa + ' - ' + eh + ea)
             },
             setLocale (code) {
+                //this.$dayspan.addLocales(['ru', 'ru-RU'], ru);
                 this.$dayspan.setLocale(code)
                 this.$dayspan.refreshTimes()
                 this.$refs.app.$forceUpdate()
