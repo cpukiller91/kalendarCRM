@@ -26,6 +26,19 @@
     },
     "color": {
       "type": "string"
+    },
+    "times": {
+      "type": "integer"
+    },
+    "duration": {
+      "type": "integer",
+      "default": 30
+    },
+    "durationUnit": {
+      "type": "enumeration",
+      "enum": [
+        "minutes"
+      ]
     }
   }
 }
