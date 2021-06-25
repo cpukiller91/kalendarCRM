@@ -37,7 +37,8 @@
     "durationUnit": {
       "type": "enumeration",
       "enum": [
-        "minutes"
+        "minutes",
+        "day"
       ]
     }
   }
