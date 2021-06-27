@@ -43,6 +43,9 @@
         "week",
         "month"
       ]
+    },
+    "minute": {
+      "type": "integer"
     }
   }
 }
