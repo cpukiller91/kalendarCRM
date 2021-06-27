@@ -38,7 +38,10 @@
       "type": "enumeration",
       "enum": [
         "minutes",
-        "day"
+        "day",
+        "hour",
+        "week",
+        "month"
       ]
     }
   }
