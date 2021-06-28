@@ -49,6 +49,9 @@
     },
     "hour": {
       "type": "integer"
+    },
+    "strtime": {
+      "type": "string"
     }
   }
 }
