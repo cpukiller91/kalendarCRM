@@ -61,6 +61,12 @@
     },
     "usergroup": {
       "model": "usergroup"
+    },
+    "stateTime": {
+      "type": "string"
+    },
+    "visState": {
+      "type": "boolean"
     }
   }
 }
