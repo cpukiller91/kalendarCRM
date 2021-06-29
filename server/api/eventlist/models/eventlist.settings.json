@@ -52,6 +52,9 @@
     },
     "strtime": {
       "type": "string"
+    },
+    "typeEvent": {
+      "type": "string"
     }
   }
 }
