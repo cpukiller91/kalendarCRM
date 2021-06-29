@@ -111,7 +111,7 @@
 
 <script>
 import { Day, Time, Schedule, Calendar, CalendarEvent, Functions as fn } from 'custom-dayspan'
-
+import axios from "axios";
 export default {
 
     name: 'dsScheduleActions',
@@ -263,18 +263,31 @@ export default {
         {
             remove () {
                 this.$dayspan.getPermission('actionRemove', () => {
+
                     var ev = this.getEvent('remove')
+                    var url = "/eventlists/"+ev.event.id;
 
-                    this.$emit('remove', ev)
+                    axios.delete(url, {})
+                    .then(response => {
+                        console.log("remove id",url)
 
-                    if (!ev.handled && ev.calendar) {
-                        ev.calendar.removeEvent(ev.event)
-                        ev.handled = true
-                    }
+                        this.$emit('remove', ev)
 
-                    this.$emit('finish', ev)
+                        if (!ev.handled && ev.calendar) {
+                            ev.calendar.removeEvent(ev.event)
+                            ev.handled = true
+                        }
 
-                    this.$emit('event-remove', ev.event)
+                        this.$emit('finish', ev)
+
+                        this.$emit('event-remove', ev.event)
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        //this.alert = true;
+                    });
+
+
                 })
             },
 
@@ -333,6 +346,7 @@ export default {
             },
 
             setStart () {
+
                 this.$dayspan.getPermission('actionSetStart', () => {
                     var ev = this.getEvent('set-start')
 
@@ -351,6 +365,7 @@ export default {
             },
 
             setEnd () {
+
                 this.$dayspan.getPermission('actionSetEnd', () => {
                     var ev = this.getEvent('set-end')
 
@@ -394,6 +409,7 @@ export default {
             moveStart () {
                 this.setTarget()
                 this.movingDate = true
+
             },
 
             moveEnd () {

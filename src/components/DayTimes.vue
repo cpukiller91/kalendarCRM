@@ -117,10 +117,13 @@ export default {
             },
 
             addAt (hour) {
-                this.$emit('add-at', {
-                    day: this.day,
-                    hour: hour - 1
-                })
+                if(hour>9 && hour<=19){
+                    this.$emit('add-at', {
+                        day: this.day,
+                        hour: hour - 1
+                    })
+                }
+
             },
 
             mouseEnterDay ($event) {
@@ -209,7 +212,7 @@ export default {
     }
 
     .ds-hour {
-        height: 40px;
+        height: 70px;
         border-bottom: #e0e0e0 1px solid;
     }
 

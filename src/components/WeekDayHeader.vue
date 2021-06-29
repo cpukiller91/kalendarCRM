@@ -113,7 +113,18 @@ export default {
             },
 
             weekday () {
-                return this.day.format(this.formats.weekday)
+                // ----- Перевод локали
+                //var date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+                var date = new Date(this.day);
+                // Запрашиваем день недели вместе с длинным форматом даты
+                var options = { weekday: 'short'
+                    // , year: 'numeric'
+                    // , month: 'long'
+                    // , day: 'numeric'
+                };
+                console.log(date.toLocaleString('ru-Ru', options));
+                //return this.day.format(this.formats.weekday)
+                return date.toLocaleString('ru-Ru', options);
             },
 
             hasPlaceholder () {

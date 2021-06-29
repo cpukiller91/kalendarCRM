@@ -130,7 +130,18 @@ export default {
             },
 
             month () {
-                return this.day.format(this.formats.month)
+                var date = new Date(this.day);
+                // Запрашиваем день недели вместе с длинным форматом даты
+                var options = {
+                    //weekday: 'short'
+                    // , year: 'numeric'
+                    month: 'short'
+                    // , day: 'numeric'
+                };
+                console.log(date.toLocaleString('ru-Ru', options),this.formats.month);
+                //return this.day.format(this.formats.weekday)
+                return date.toLocaleString('ru-Ru', options);
+                //return this.day.format(this.formats.month)
             },
 
             hasPlaceholder () {

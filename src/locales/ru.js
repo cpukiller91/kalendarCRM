@@ -85,10 +85,10 @@ export default {
         },
         dsAgendaEvent: {
             formats: {
-                firstLine: 'ddd',
-                secondLine: 'MMM Do',
+                firstLine: 'DD',
+                secondLine: 'MM Do',
                 start: 'dddd, MMMM D',
-                time: 'h:mm a'
+                time: 'HH:mm'
             },
             labels: {
                 allDay: 'Весь день',
@@ -117,7 +117,7 @@ export default {
         dsCalendarEventPopover: {
             formats: {
                 start: 'dddd, MMMM D',
-                time: 'h:mm a'
+                time: 'HH:mm'
             },
             labels: {
                 allDay: 'Весь день',
@@ -140,7 +140,7 @@ export default {
         dsCalendarEventCreatePopover: {
             formats: {
                 start: 'dddd, MMMM D',
-                time: 'h:mm a'
+                time: 'HH:mm'
             },
             labels: {
                 title: 'Добавить заголовок',
@@ -371,7 +371,7 @@ export default {
 
         dsWeekDayHeader: {
             formats: {
-                weekday: 'ddd'
+                weekday: 'dddd'
             }
         },
 
@@ -381,8 +381,8 @@ export default {
 
         dsDaysView: {
             hours: [
-                '    ', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am',
-                '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm'
+                '    ','','','','','','','','','9:00', '10:00', '11:00',
+                '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00','','','','',
             ]
         },
 

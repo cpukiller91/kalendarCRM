@@ -24,10 +24,11 @@
 
                             <div class="ds-hour"
                                  v-for="(hour, i) in hours"
+
                                  :class="hourClasses[ i ]"
                                  :key="i">
 
-                                <div class="ds-hour-text">{{ hour }}</div>
+                                <div class="ds-hour-text"  >{{ hour }}</div>
 
                             </div>
                         </div>
@@ -42,6 +43,7 @@
                                     :placeholder="placeholder"
                                     :placeholder-for-create="placeholderForCreate"
                                     :calendar="calendar"
+
                             ></ds-day-times>
 
                         </template>
@@ -139,6 +141,7 @@ export default {
         },
 
     mounted () {
+        //console.log(this.hours)
         this.scrollToEvent()
         this.scrollPush = this.getScrollPush()
     },
@@ -227,7 +230,8 @@ export default {
             .ds-hour {
                 text-align: center;
                 border-bottom: none;
-                height: 40px;
+                //height: 60px;  ----- ширина полоски часа 40
+                height: 70px;
 
                 .ds-hour-text {
                     display: block;

@@ -86,6 +86,24 @@
                           item-value="id"
                           v-on:change="onChangeKid"
                       ></v-select>
+                        <v-select
+                            :items="timerDuration"
+                            label="Начало приема"
+
+                            v-model="durationSelect"
+                        ></v-select>
+                        <v-select
+                            :items="timerDurationRange"
+                            label="Длительность приема"
+
+                            v-model="durationSelectRange"
+                        ></v-select>
+                        <v-select
+                                :items="typeEventList"
+                                label="Тип приема"
+
+                                v-model="typeEvent"
+                        ></v-select>
                         <slot name="eventCreatePopoverOccurs" v-bind="slotData">
                             <v-list-item-title>{{ startDate }}</v-list-item-title>
                             <v-list-item-subtitle>{{ occurs }}</v-list-item-subtitle>
@@ -230,7 +248,7 @@
 <script>
 import { CalendarEvent, Calendar, Pattern, Functions as fn } from 'custom-dayspan'
 import axios from "axios";
-axios.defaults.baseURL = "http://localhost:1337";
+//axios.defaults.baseURL = "http://localhost:1337";
 
 export default {
 
@@ -336,7 +354,19 @@ export default {
          },
 
          startDate () {
-             return this.calendarEvent.start.format(this.formats.start)
+             // unixTimeZero.toLocaleString('ru-Ru')
+             console.log("startDate-",this.calendarEvent.start.date)
+
+             var date = new Date(this.calendarEvent.start.date);
+             // Запрашиваем день недели вместе с длинным форматом даты
+             var options = { weekday: 'long'
+                 // , year: 'numeric'
+                  , month: 'long'
+                  , day: 'numeric'
+             };
+             //console.log("startDate",date.toLocaleString('ru-Ru', options));
+             //return this.calendarEvent.start.format(this.formats.start)
+             return date.toLocaleString('ru-Ru', options);
          },
        dayOfMonth () {
           //"2021-03-09"
@@ -374,17 +404,37 @@ export default {
      },
 
  data: vm => ({
-   details: vm.buildDetails(),
-   personal:[],
-   itemCardKids:[],
-   babycard:null,
-   AddCard: false
+    timerDurationRange:[15,30,45,60],
+    durationSelectRange:30,
+    typeEventList:[
+        "Диагностика",
+        "Консультация",
+        "Индивидуальное занятие",
+        "Групповое занятие",
+        "Консультация родителей",
+        "Прием КДЦ",
+        "Мониторинг"
+    ],
+    typeEvent:"Диагностика",
+    durationUnit:"day",
+    duration:1,
+    durationSelect:"9:00",
+
+    timerDuration:["9:00","9:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30",
+        "15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00"],
+
+    details: vm.buildDetails(),
+    personal:[],
+    itemCardKids:[],
+    babycard:null,
+    AddCard: false
  }),
  mounted (){
      // Set default duration to be consistent with default icon selection for virus
     //console.log(this.startDate,this.formats.start);
    var LoginData = JSON.parse(localStorage.getItem('login'));
    this.AddCard = LoginData.user.usergroup.addCard
+
      axios.get('/users', {})
      .then(response => {
        this.alert = false;
@@ -422,7 +472,7 @@ export default {
            //console.log(element.username)
 
          })
-         console.log(itemCard);
+         //console.log(itemCard);
          this.itemCardKids = itemCard;
 
        })
@@ -430,10 +480,12 @@ export default {
          console.log(error);
          //this.alert = true;
        });
-     this.calendarEvent.fullDay = false
-     this.calendarEvent.schedule.durationUnit = "day"
-     this.calendarEvent.schedule.duration = 1
-     this.calendarEvent.schedule.times = []
+     //this.calendarEvent.fullDay = false
+     //this.calendarEvent.schedule.durationUnit = "day"
+     //this.calendarEvent.schedule.duration = 1
+     //this.calendarEvent.schedule.durationUnit = "minutes"
+     //this.calendarEvent.schedule.duration = 10
+     //this.calendarEvent.schedule.times = [9]
  },
  methods:
      {
@@ -485,53 +537,79 @@ export default {
          },
 
          save () {
-           var data = {
-             title:this.details.title,
-             month:this.month,
-             dayOfMonth:this.dayOfMonth,
-             color:this.details.color,
-             babycard:this.babycard
+           console.log("Event Create ",this.calendarEvent.schedule);
+
+
+           if(this.calendarEvent.schedule.durationUnit == "hour"){
+
+               this.times = this.calendarEvent.start.hour;
+               //console.log("1-1",this.calendarEvent.start);
+               this.durationSelect = this.calendarEvent.start.hour+":00";
+               this.durationUnit = "minutes";
+               this.duration = this.durationSelectRange;
            }
 
-           axios.post('/eventlists', data)
-           .then(response => {
-             console.log(response);
+            if(this.calendarEvent.schedule.durationUnit == "day"){
 
+                this.times = this.calendarEvent.start.hour;
+                //console.log("1-1",this.calendarEvent.start);
+                this.durationUnit = "minutes";
+                this.duration = this.durationSelectRange;
+            }
+
+           var data = {
+            durationUnit:this.durationUnit,
+            duration:this.duration,
+            times:this.times,
+            strtime: this.durationSelect,
+               typeEvent:this.typeEvent,
+            title:this.details.title,
+            month:this.month,
+            dayOfMonth:this.dayOfMonth,
+            color:this.details.color,
+            babycard:this.babycard,
+
+           }
              let ev = this.getEvent('creating')
 
              this.$emit('creating', ev)
 
              if (!ev.handled && ev.details && ev.calendarEvent) {
-               ev.created = ev.calendarEvent.event
+                 ev.created = ev.calendarEvent.event
 
-               this.$dayspan.setEventDetails(
-                   ev.details,
-                   ev.created.data,
-                   ev.created,
-                   ev.calendarEvent
-               )
+                 this.$dayspan.setEventDetails(
+                     ev.details,
+                     ev.created.data,
+                     ev.created,
+                     ev.calendarEvent
+                 )
 
-               if (ev.calendar) {
-                 ev.calendar.addEvent(ev.created)
-                 ev.added = true
-               }
-               //
-               this.$emit('created', ev)
+                 if (ev.calendar) {
+                     ev.calendar.addEvent(ev.created)
+                     ev.added = true
+                 }
+                 //
+                 this.$emit('created', ev)
 
-               if (ev.calendar && ev.refresh) {
-                 ev.calendar.refreshEvents()
-               }
+                 if (ev.calendar && ev.refresh) {
+                     ev.calendar.refreshEvents()
+                 }
 
-               ev.handled = true
+                 ev.handled = true
 
-               this.$emit('event-create', ev.created)
+                 this.$emit('event-create', ev.created)
              }
              //
-             this.finishEvent(ev)
-           })
-           .catch(function (error) {
+            this.finishEvent(ev)
+            //console.log(this);
+            axios.post('/eventlists', data)
+            .then(response => {
+             console.log("eventlists save",response);
+
+            })
+            .catch(function (error) {
              console.log(error);
-           });
+            });
 
 
          },
@@ -553,6 +631,11 @@ export default {
          },
 
          getEvent (type, extra = {}) {
+
+             console.log(this.calendarEvent.start.hour)
+             //console.log(this)
+
+
              return fn.extend({
 
                  type: type,

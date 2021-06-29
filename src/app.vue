@@ -2,7 +2,7 @@
     <v-app id="dayspan" v-cloak  >
 
         <ds-calendar-app v-if="logIn===true" ref="app"
-                        :nav-drawer="nav"
+                        :nav-drawer="false"
                          :calendar="calendar"
                          :read-only="readOnly"
                          @change="saveState">
@@ -128,7 +128,7 @@
 <script>
 import { dsMerge } from './functions'
 //import ru from '/src/locales/ru';
-import { Calendar, Weekday, Month, Sorts } from 'custom-dayspan'
+import { Calendar, Weekday, Month, Sorts,Time } from 'custom-dayspan'
 import axios from "axios";
 axios.defaults.baseURL = "https://admin.cdcmc.ru";
 
@@ -142,10 +142,10 @@ export default {
         password: '!4L@mer90',
         //username:"Павлова Наталья Николаевна",
         storeKey: 'dayspanState',
-        calendar: Calendar.months(),
+        calendar: Calendar.days(),
         readOnly: false,
         AddCard: false,
-        nav: true,
+        nav: false,
         currentLocale: 'ru',
         locales: [
             {value: 'ru', text: 'Русский'},
@@ -157,30 +157,8 @@ export default {
       defaultEvents: []
     }),
     mounted () {
-      localStorage.removeItem("dayspanState")
-      axios.get('/eventlists', {params:{}})
-          .then(response => {
-            response.data.forEach((element) => {
-              //console.log(element)
-
-              this.defaultEvents.push({
-                data: {
-                  title: element.title,
-                  color: element.color
-                },
-                schedule: {
-                  month: [element.month-1],
-                  dayOfMonth: [element.dayOfMonth],
-                }
-              })
-            })
-
-            console.log("Eventlists load");
-            this.loadState ();
-            console.log(response.data);
-            //this.edit();
-          });
-      console.log("-->",typeof localStorage.getItem('login'), localStorage.getItem('login'))
+        this.loadData();
+      //console.log("-->",typeof localStorage.getItem('login'), localStorage.getItem('login'))
       if(localStorage.getItem('login')){
 
         var LoginData = JSON.parse(localStorage.getItem('login'));
@@ -191,93 +169,129 @@ export default {
         this.nav = true;
 
 
-
-
       }
-
 
 
     },
     methods: {
 
-          submit () {
+        submit () {
 
-            //this.$v.$touch()
-            axios.post('/auth/local', {
+        //this.$v.$touch()
+        axios.post('/auth/local', {
 
-              identifier: this.identifier,
-              password: this.password,
-            })
+          identifier: this.identifier,
+          password: this.password,
+        })
+        .then(response => {
+          this.alert = false;
+          // var  LoginData = JSON.parse(localStorage.getItem('login'));
+          // console.log(LoginData);
+          if(response.data.jwt){
+            let json = JSON.stringify(response.data)
+            this.logIn = true;
+            localStorage.setItem("login", json)
+            window.location.href = '/'
+          }
+
+
+        })
+        .catch(error => {
+          console.log(error);
+          this.alert = true;
+        });
+
+        },
+        clear () {
+        //this.$v.$reset()
+        this.login = ''
+        this.pass = ''
+        localStorage.removeItem(this.storeKey)
+        localStorage.setItem("login", '')
+        },
+        loadData(){
+            localStorage.removeItem("dayspanState")
+
+            axios.get('/eventlists', {params:{}})
             .then(response => {
-              this.alert = false;
-              // var  LoginData = JSON.parse(localStorage.getItem('login'));
-              // console.log(LoginData);
-              if(response.data.jwt){
-                let json = JSON.stringify(response.data)
-                this.logIn = true;
-                localStorage.setItem("login", json)
-                window.location.href = '/'
-              }
+                response.data.forEach((element) => {
+                    console.log(element)
+                    this.defaultEvents.push({
+                        id:element.id,
+                        data: {
+                            id:element.id,
+                            title: element.title + "("+element.babycard.kidf+" "+element.babycard.kidi+")",
+                            color: element.color
+                        },
+                        schedule: {
 
+                            month: [element.month-1],
+                            dayOfMonth: [element.dayOfMonth],
+                            //duration: 1,
+                            //durationUnit: 'hour',
 
-            })
-            .catch(error => {
-              console.log(error);
-              this.alert = true;
+                            times: [Time.parse(element.strtime)],
+
+                            // durationUnit: "hour",
+                            //times: [12],
+                            //minute:30,
+                            //hour:[30],
+                            duration: element.duration,
+                            durationUnit: element.durationUnit
+                        }
+                    })
+                })
+
+                //console.log("Eventlists load");
+                this.loadState ();
+                //this.rebuild();
+                //console.log(response.data);
+                //this.edit();
             });
-
-          },
-          clear () {
-            //this.$v.$reset()
-            this.login = ''
-            this.pass = ''
-            localStorage.removeItem(this.storeKey)
-            localStorage.setItem("login", '')
-          },
-
-            getCalendarTime (calendarEvent) {
-                let sa = calendarEvent.start.format('a')
-                let ea = calendarEvent.end.format('a')
-                let sh = calendarEvent.start.format('h')
-                let eh = calendarEvent.end.format('h')
-                if (calendarEvent.start.minute !== 0) {
-                    sh += calendarEvent.start.format(':mm')
-                }
-                if (calendarEvent.end.minute !== 0) {
-                    eh += calendarEvent.end.format(':mm')
-                }
-                return (sa === ea) ? (sh + ' - ' + eh + ea) : (sh + sa + ' - ' + eh + ea)
-            },
-            setLocale (code) {
-                //this.$dayspan.addLocales(['ru', 'ru-RU'], ru);
-                this.$dayspan.setLocale(code)
-                this.$dayspan.refreshTimes()
-                this.$refs.app.$forceUpdate()
-            },
-            saveState () {
-                let state = this.calendar.toInput(true)
-                let json = JSON.stringify(state)
-                localStorage.setItem(this.storeKey, json)
-            },
-            loadState () {
-
-                let state = {}
-                try {
-                    let savedState = JSON.parse(localStorage.getItem(this.storeKey))
-                    if (savedState) {
-                        state = savedState
-                        state.preferToday = false
-                    }
-                } catch (e) {
-                    console.log(e)
-                }
-                if (!state.events || !state.events.length) {
-                    state.events = this.defaultEvents
-                }
-
-                //console.log("Load stale",this.defaultEvents)
-                this.$refs.app.setState(state)
+        },
+        getCalendarTime (calendarEvent) {
+            let sa = calendarEvent.start.format('p')
+            let ea = calendarEvent.end.format('p')
+            let sh = calendarEvent.start.format('HH:mm')
+            let eh = calendarEvent.end.format('HH:mm')
+            if (calendarEvent.start.minute !== 0) {
+                sh += calendarEvent.start.format(':mm')
             }
+            if (calendarEvent.end.minute !== 0) {
+                eh += calendarEvent.end.format(':mm')
+            }
+            return (sa === ea) ? (sh + ' - ' + eh) : (sh  + ' - ' + eh)
+        },
+        setLocale (code) {
+            //this.$dayspan.addLocales(['ru', 'ru-RU'], ru);
+            this.$dayspan.setLocale(code)
+            this.$dayspan.refreshTimes()
+            this.$refs.app.$forceUpdate()
+        },
+        saveState () {
+            let state = this.calendar.toInput(true)
+            let json = JSON.stringify(state)
+            localStorage.setItem(this.storeKey, json)
+        },
+        loadState () {
+
+            let state = {}
+            try {
+                let savedState = JSON.parse(localStorage.getItem(this.storeKey))
+                if (savedState) {
+                    state = savedState
+                    state.preferToday = false
+                }
+            } catch (e) {
+                console.log(e)
+            }
+            if (!state.events || !state.events.length) {
+                state.events = this.defaultEvents
+            }
+
+            //console.log("Load stale",this.defaultEvents)
+            this.$refs.app.setState(state)
+        }
         }
 }
 </script>

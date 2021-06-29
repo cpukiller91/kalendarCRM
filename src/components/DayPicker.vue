@@ -118,7 +118,24 @@ export default {
     computed:
         {
             summary () {
-                return this.month ? this.month.summary(false, false, false, false) : ''
+
+                var IPOdate = new Date();
+                IPOdate.setTime(Date.parse( this.month.summary(false, false, false, false)));
+                var options = {
+                    //weekday: 'short',
+                    year: 'numeric'
+                    , month: 'long'
+                    // , day: 'numeric'
+                };
+
+                console.log(
+                    this.month.summary(false, false, false, false),
+                    Date.parse(this.month.summary(false, false, false, false)),
+                    IPOdate.toLocaleString('ru-Ru',options)
+                )
+
+                return this.month ? IPOdate.toLocaleString('ru-Ru',options) : ''
+                //return this.month;
             }
         },
 

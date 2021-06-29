@@ -31,7 +31,6 @@
         </td>
 
         <td class="ds-agenda-details" @click.stop="editCheck">
-
             <v-menu
                     class="ds-calendar-event-menu"
                     :content-class="contentClass"

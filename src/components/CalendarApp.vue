@@ -2,6 +2,7 @@
   <div class="ds-expand ds-calendar-app">
 
     <v-navigation-drawer fixed app v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp">
+
       <slot name="drawerTop"></slot>
 
       <slot name="drawerPicker" :calendar="calendar" :picked="rebuild">
@@ -31,7 +32,7 @@
                   v-bind="attrs"
                   v-on="on"
               >
-               Добавить карочку ребенка
+               Добавить карточку ребенка
               </v-btn>
             </template>
             <v-card>
@@ -46,7 +47,7 @@
                 >
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
-                <v-toolbar-title>Карочка ребенка</v-toolbar-title>
+                <v-toolbar-title>Карточка ребенка</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
                   <v-btn
@@ -1050,6 +1051,8 @@
           </v-dialog>
         </v-row>
       </template>
+
+
       <!--
       <slot name="drawerBottom"></slot>
 -->
@@ -1372,8 +1375,10 @@ export default {
     this.drawer = this.navDrawer
   },
   data: vm => ({
+
     datebf:null,
     menubf:null,
+    dialogAllTask:false,
     dialogAll:false,
     AddCard: false,
     AllCard: false,
@@ -1562,6 +1567,7 @@ export default {
         );
       },
       set(type) {
+        console.log("currentType",type);
         this.rebuild(undefined, true, type);
       }
     },
@@ -1570,11 +1576,12 @@ export default {
       let small = this.$vuetify.breakpoint.xs;
 
       if (small) {
+        console.log("small",this.calendar.start.format(this.formats.xs));
         return this.calendar.start.format(this.formats.xs);
       }
 
       let large = this.$vuetify.breakpoint.mdAndUp;
-
+      console.log("summary",this.calendar.summary(false, !large, false, !large),large);
       return this.calendar.summary(false, !large, false, !large);
     },
 
@@ -1618,8 +1625,18 @@ export default {
   },
 
   mounted() {
+    //this.drawer = false;
+    this.currentType = this.types[0];
+    console.log("App",this.types[0],this.drawer)
     //console.log("mount",this.monthDiff(new Date("2000,01,01"), new Date("2013,08,02")));
     //console.log("refsApp",this.$refs)
+    //this.currentType = this.type[0];
+    //this.rebuild(undefined, true, this.type[0]);
+    //this.rebuild(this.$dayspan.today);
+
+    //console.log("dayspan.today",this.$dayspan.today);
+    //this.currentType = this.type[0];
+
     if(localStorage.getItem('login')){
       var LoginData = JSON.parse(localStorage.getItem('login'));
       console.log(LoginData.user);
@@ -1638,6 +1655,7 @@ export default {
   },
 
   methods: {
+
     monthDiff(dateFrom, dateTo) {
       //console.log(new Date(this.date));
       dateFrom = new Date(this.date);
@@ -1680,6 +1698,7 @@ export default {
 
 
       var data = {
+
         otdelenije: this.Otdelenije,
         date:this.date,
 
@@ -1807,6 +1826,7 @@ export default {
     },
 
     setToday() {
+
       this.rebuild(this.$dayspan.today);
     },
 
@@ -1839,6 +1859,8 @@ export default {
       let calendar = this.$refs.calendar;
       let useDialog = !this.hasCreatePopover;
 
+      //console.log("add day",day);
+
       calendar.addPlaceholder(day, true, useDialog);
 
       if (useDialog) {
@@ -1851,6 +1873,14 @@ export default {
       if (!this.canAddTime) {
         return;
       }
+      // times: [ element.times],
+      //         duration: element.duration,
+      //         durationUnit: element.durationUnit
+      console.log("------",dayHour)
+
+      this.time = dayHour;
+      this.duration = "minutes";
+      this.durationUnit = 30;
 
       let eventDialog = this.$refs.eventDialog;
       let calendar = this.$refs.calendar;
@@ -1935,6 +1965,19 @@ export default {
           this.$emit("event-update", calendarEvent.event);
         },
         instance: () => {
+
+          // console.log("instance",targetStart.hour+":"+targetStart.minute,moveEvent)
+          // var url = "/eventlists/";
+
+          // axios.put(url, {})
+          // .then(response => {
+          //
+          // })
+          // .catch(error => {
+          //   console.log(error);
+          //   //this.alert = true;
+          // });
+
           calendarEvent.move(targetStart);
           this.eventsRefresh();
           moveEvent.clearPlaceholder();

@@ -37,6 +37,7 @@
         </div>
 
         <div v-if="isWeek || isDay" class="ds-week-view">
+
             <ds-days-view
                     v-bind="{$scopedSlots}"
                     v-on="$listeners"

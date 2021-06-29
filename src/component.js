@@ -27,10 +27,12 @@ export default {
         refreshInterval: Constants.MILLIS_IN_MINUTE,
 
         dayPadding: 5,
-        dayHeight: 960,
-        columnOffset: 10,
+//dayHeight: 960,
+        dayHeight: 1680,
+        columnOffset: 15,
         eventHeight: 21,
-        hourHeight: 40,
+      // hourHeight: 40,
+        hourHeight: 70,
 
         inactiveBlendTarget: { r: 255, g: 255, b: 255 },
         inactiveBlendAmount: 0.5,
@@ -376,6 +378,8 @@ export default {
             let cancelled = calendarEvent.cancelled
             let bounds = calendarEvent.getTimeBounds(this.dayHeight, 1, this.columnOffset)
 
+            //console.log("getStyleTimed",calendarEvent,bounds);
+
             let color = this.getStyleColor(details, calendarEvent)
             let stateColor = this.getStyleColor(details, calendarEvent, past, cancelled)
 
@@ -397,7 +401,7 @@ export default {
         },
 
         getStyleNowBorder() {
-            return 'red solid 3px'
+            return 'black solid 1px'
         },
 
         getStyleNow() {

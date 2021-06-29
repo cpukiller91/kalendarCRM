@@ -69,9 +69,22 @@
 
                 <v-list-item>
                     <v-list-item-avatar>
-                        <v-icon>access_time</v-icon>
+                       <!-- <v-icon>access_time</v-icon> -->
                     </v-list-item-avatar>
                     <v-list-item-content>
+
+                        <v-text-field
+                                v-model="babyName"
+
+                                label="Карточка ребенка"
+                                disabled
+                        ></v-text-field>
+                        <v-select
+                                :items="typeEventList"
+                                label="Тип приема"
+                                disabled
+                                v-model="typeEvent"
+                        ></v-select>
                         <slot name="eventPopoverOccurs" v-bind="slotData">
                             <v-list-item-title>{{ startDate }}</v-list-item-title>
                             <v-list-item-subtitle>{{ occurs }}</v-list-item-subtitle>
@@ -172,7 +185,7 @@
 
 <script>
 import { CalendarEvent, Calendar, Pattern } from 'custom-dayspan'
-
+import axios from "axios";
 export default {
 
     name: 'dsCalendarEventPopover',
@@ -269,7 +282,19 @@ export default {
             },
 
             startDate () {
-                return this.calendarEvent.start.format(this.formats.start)
+                // unixTimeZero.toLocaleString('ru-Ru')
+                //console.log("startDate-",this.calendarEvent.start.date)
+
+                var date = new Date(this.calendarEvent.start.date);
+                // Запрашиваем день недели вместе с длинным форматом даты
+                var options = { weekday: 'long'
+                    // , year: 'numeric'
+                    , month: 'long'
+                    , day: 'numeric'
+                };
+                //console.log("startDate",date.toLocaleString('ru-Ru', options));
+                //return this.calendarEvent.start.format(this.formats.start)
+                return date.toLocaleString('ru-Ru', options);
             },
 
             busyness () {
@@ -302,8 +327,44 @@ export default {
             }
         },
 
-    data: vm => ({}),
+    data: vm => ({
+        eventDetail:{},
+        itemCardKids:[],
+        babycard:null,
+        timerDurationRange:[15,30,45,60],
+        durationSelectRange:30,
+        typeEventList:[
+            "Диагностика",
+            "Консультация",
+            "Индивидуальное занятие",
+            "Групповое занятие",
+            "Консультация родителей",
+            "Прием КДЦ",
+            "Мониторинг"
+        ],
+        typeEvent:"Диагностика",
+        babyName: null
+    }),
+    mounted(){
+        axios.get('/eventlists', {
+            params:{
+                id:this.calendarEvent.event.data.id
+            }
+        })
+        .then(response => {
+            this.eventDetail = response.data[0];
+            this.typeEvent = response.data[0].typeEvent;
+            this.babyName = this.eventDetail.babycard.kidf+" "+ this.eventDetail.babycard.kidi+ " " +this.eventDetail.babycard.kido;
+            console.log(this.babyName);
+            //this.eventDetail = response.data[0];
 
+        })
+        .catch(error => {
+            console.log(error);
+
+        });
+        console.log("mounted--",this.calendarEvent.event.data )
+    },
     methods:
         {
             actioned (ev) {

@@ -80,12 +80,17 @@ export default {
             },
 
             visibleEvents () {
+                console.log("Event List", this.day.events.filter(this.isVisible))
+                //console.log("Event List", this.isVisible)
                 return this.day.events.filter(this.isVisible)
             }
         },
 
     methods:
         {
+            mounted(){
+
+            },
             isVisible (calendarEvent) {
                 if (this.$dayspan.features.hideOnMove &&
                     this.placeholder &&

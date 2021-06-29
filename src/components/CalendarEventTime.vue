@@ -14,6 +14,7 @@
                      @mouseleave="mouseLeaveEvent"
                      @mousedown="mouseDownEvent"
                      @mouseup="mouseUpEvent">
+
                 <span v-if="showName">
                     <slot name="eventTimeTitle" v-bind="{calendarEvent, details}">
                         <v-icon class="ds-ev-icon"
@@ -26,7 +27,7 @@
                         <span class="ds-ev-description">{{ details.description }}</span>
                     </slot>
                 </span>
-                    <span v-else>
+                <span v-else>
                     <slot name="eventTimeEmpty" v-bind="{calendarEvent, details}"></slot>
                 </span>
                 </div>
@@ -101,12 +102,14 @@ export default {
             },
 
             details () {
+                //console.log(this.calendarEvent.event.data)
                 return this.calendarEvent.event.data
             }
         },
 
     data: vm => ({
-        menu: false
+        menu: false,
+
     }),
 
     methods:
@@ -133,12 +136,14 @@ export default {
 
             mouseEnterEvent ($event) {
                 if (this.handlesEvents($event)) {
+
                     this.$emit('mouse-enter-event', this.getEvent('mouse-enter-event', $event))
                 }
             },
 
             mouseLeaveEvent ($event) {
                 if (this.handlesEvents($event)) {
+
                     this.$emit('mouse-leave-event', this.getEvent('mouse-leave-event', $event))
                 }
             },
@@ -150,12 +155,15 @@ export default {
             },
 
             mouseUpEvent ($event) {
+
                 if (this.handlesEvents($event)) {
+                    //console.log("move",$event)
                     this.$emit('mouse-up-event', this.getEvent('mouse-up-event', $event))
                 }
             },
 
             handlesEvents ($event) {
+
                 var handles = !this.isPlaceholderWithDay
 
                 if (handles && $event) {
