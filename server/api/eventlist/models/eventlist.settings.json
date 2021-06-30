@@ -55,6 +55,9 @@
     },
     "typeEvent": {
       "type": "string"
+    },
+    "userId": {
+      "type": "integer"
     }
   }
 }
