@@ -17,7 +17,9 @@
                   :items="personal"
                   label="Вибрать сециалиста"
                   :color="personal.color"
-                  v-model="details.title"
+                  v-model="userId"
+                  item-text="title"
+                  item-value="id"
                   v-on:change="onChangeDoc"
               ></v-select>
 
@@ -404,7 +406,8 @@ export default {
      },
 
  data: vm => ({
-    timerDurationRange:[15,30,45,60],
+    userId:null,
+    timerDurationRange:[30,60],
     durationSelectRange:30,
     typeEventList:[
         "Диагностика",
@@ -427,7 +430,8 @@ export default {
     personal:[],
     itemCardKids:[],
     babycard:null,
-    AddCard: false
+    AddCard: false,
+    title:""
  }),
  mounted (){
      // Set default duration to be consistent with default icon selection for virus
@@ -435,7 +439,7 @@ export default {
    var LoginData = JSON.parse(localStorage.getItem('login'));
    this.AddCard = LoginData.user.usergroup.addCard
 
-     axios.get('/users', {})
+     axios.get('/users', {params:{visState_ne:false}})
      .then(response => {
        this.alert = false;
        var item = [];
@@ -443,7 +447,10 @@ export default {
        // var  LoginData = JSON.parse(localStorage.getItem('login'));
        //console.log(response.data);
        response.data.forEach((element) => {
-         item[c] = element.username;
+         item[c] = {
+             "title": element.username,
+             "id": element.id
+         };
          c++;
          //console.log(element.username)
 
@@ -493,9 +500,10 @@ export default {
 
        },
        onChangeDoc (){
-        axios.get('/users', {params:{username:this.details.title}})
+        axios.get('/users', {params:{id:this.userId}})
         .then(response => {
-          this.details.color = response.data[0].usergroup.color;
+            this.details.color = response.data[0].usergroup.color;
+            this.title = response.data[0].username;
           //console.log(response.data[0].usergroup.color);
           //this.edit();
         })
@@ -556,14 +564,15 @@ export default {
                 this.durationUnit = "minutes";
                 this.duration = this.durationSelectRange;
             }
-
+//console.log("ITEM",item);
            var data = {
             durationUnit:this.durationUnit,
             duration:this.duration,
             times:this.times,
             strtime: this.durationSelect,
                typeEvent:this.typeEvent,
-            title:this.details.title,
+            title:this.title,
+            userId:this.userId,
             month:this.month,
             dayOfMonth:this.dayOfMonth,
             color:this.details.color,
@@ -605,6 +614,7 @@ export default {
             axios.post('/eventlists', data)
             .then(response => {
              console.log("eventlists save",response);
+                window.location.href = '/'
 
             })
             .catch(function (error) {

@@ -1966,17 +1966,23 @@ export default {
         },
         instance: () => {
 
-          // console.log("instance",targetStart.hour+":"+targetStart.minute,moveEvent)
-          // var url = "/eventlists/";
+          console.log("instance",targetStart.hour+":"+targetStart.minute,moveEvent.calendarEvent.data.id,moveEvent)
+          var min;
+          if(targetStart.minute == 0){
+            min = "00";
+          }else{
+            min = targetStart.minute;
+          }
+          var url = "/eventlists/"+moveEvent.calendarEvent.data.id;
 
-          // axios.put(url, {})
-          // .then(response => {
-          //
-          // })
-          // .catch(error => {
-          //   console.log(error);
-          //   //this.alert = true;
-          // });
+          axios.put(url, {strtime:targetStart.hour+":"+min})
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            console.log(error);
+            //this.alert = true;
+          });
 
           calendarEvent.move(targetStart);
           this.eventsRefresh();

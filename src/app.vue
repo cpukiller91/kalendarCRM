@@ -154,9 +154,15 @@ export default {
             {value: 'de', text: 'German'},
             {value: 'nl', text: 'Dutch'}
         ],
-      defaultEvents: []
+        defaultEvents: [
+
+        ],
+        removeList:[]
+
+
     }),
     mounted () {
+
         this.loadData();
       //console.log("-->",typeof localStorage.getItem('login'), localStorage.getItem('login'))
       if(localStorage.getItem('login')){
@@ -211,15 +217,60 @@ export default {
         },
         loadData(){
             localStorage.removeItem("dayspanState")
+            var d = new Date();
+            console.log("-----==",this.defaultEvents);
+
+            axios.get('/users?visState_ne=false', {params:{}})
+            .then(response => {
+
+                response.data.forEach((element) => {
+                    if (this.removeList.indexOf(element.id) == -1) {
+
+                        this.defaultEvents.push({
+                            //id:element.id,
+                            data: {
+                                userId: element.id,
+                                type: "user",
+                                title: element.username,
+                                color: element.usergroup.color
+                            },
+                            schedule: {
+
+                                month: [d.getMonth()],
+                                dayOfMonth: [d.getDate()],
+                                //duration: 1,
+                                //durationUnit: 'hour',
+
+                                times: [Time.parse(element.stateTime)],
+
+                                // durationUnit: "hour",
+                                //times: [12],
+                                //minute:30,
+                                //hour:[30],
+                                duration: 30,
+                                durationUnit: "minutes"
+                            }
+                        })
+                    }
+
+                })
+                console.log("Remove List",this.removeList)
+                this.loadState ();
+            });
+
+
 
             axios.get('/eventlists', {params:{}})
             .then(response => {
+
                 response.data.forEach((element) => {
-                    console.log(element)
+                    this.removeList.push( element.userId);
+                    //console.log(element.babycard.id)
                     this.defaultEvents.push({
                         id:element.id,
                         data: {
                             id:element.id,
+                            type:"event",
                             title: element.title + "("+element.babycard.kidf+" "+element.babycard.kidi+")",
                             color: element.color
                         },
@@ -243,9 +294,10 @@ export default {
                 })
 
                 //console.log("Eventlists load");
-                this.loadState ();
+               // this.loadState ();
                 //this.rebuild();
-                //console.log(response.data);
+                //console.log("eventlists",response.data);
+
                 //this.edit();
             });
         },

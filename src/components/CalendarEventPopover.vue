@@ -72,19 +72,20 @@
                        <!-- <v-icon>access_time</v-icon> -->
                     </v-list-item-avatar>
                     <v-list-item-content>
+                        <div v-if="details.type == 'event'">
+                            <v-text-field
+                                    v-model="babyName"
 
-                        <v-text-field
-                                v-model="babyName"
-
-                                label="Карточка ребенка"
-                                disabled
-                        ></v-text-field>
-                        <v-select
-                                :items="typeEventList"
-                                label="Тип приема"
-                                disabled
-                                v-model="typeEvent"
-                        ></v-select>
+                                    label="Карточка ребенка"
+                                    disabled
+                            ></v-text-field>
+                            <v-select
+                                    :items="typeEventList"
+                                    label="Тип приема"
+                                    disabled
+                                    v-model="typeEvent"
+                            ></v-select>
+                        </div>
                         <slot name="eventPopoverOccurs" v-bind="slotData">
                             <v-list-item-title>{{ startDate }}</v-list-item-title>
                             <v-list-item-subtitle>{{ occurs }}</v-list-item-subtitle>
@@ -331,7 +332,7 @@ export default {
         eventDetail:{},
         itemCardKids:[],
         babycard:null,
-        timerDurationRange:[15,30,45,60],
+        timerDurationRange:[30,60],
         durationSelectRange:30,
         typeEventList:[
             "Диагностика",
@@ -353,9 +354,10 @@ export default {
         })
         .then(response => {
             this.eventDetail = response.data[0];
+
             this.typeEvent = response.data[0].typeEvent;
             this.babyName = this.eventDetail.babycard.kidf+" "+ this.eventDetail.babycard.kidi+ " " +this.eventDetail.babycard.kido;
-            console.log(this.babyName);
+            console.log(this.calendarEvent.event.data);
             //this.eventDetail = response.data[0];
 
         })
