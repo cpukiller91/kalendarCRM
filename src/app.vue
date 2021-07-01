@@ -165,9 +165,12 @@ export default {
         axios.get('/eventlists', {params:{}})
         .then(response => {
             //console.log("Test ",this.UserList)
-
+            var d = new Date();
             response.data.forEach((element) => {
-                this.removeList.push( element.userId);
+                if(element.month-1 == d.getMonth() && element.dayOfMonth == d.getDate()){
+                    this.removeList.push( element.userId);
+                }
+
                 //console.log(element.babycard.id)
                 this.defaultEvents.push({
                     id:element.id,
