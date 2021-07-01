@@ -43,6 +43,7 @@
             <slot name="eventCreatePopoverToolbarSave" v-bind="slotData">
 
                 <v-btn
+                        v-if="babycard"
                   class="ds-create-popover-save"
                   text
                   :disabled="!isValid"

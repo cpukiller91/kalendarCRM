@@ -154,16 +154,59 @@ export default {
             {value: 'de', text: 'German'},
             {value: 'nl', text: 'Dutch'}
         ],
-        defaultEvents: [
-
-        ],
-        removeList:[]
+        defaultEvents: [],
+        removeList:[],
+        EventList:[],
+        UserList:[]
 
 
     }),
     mounted () {
+        axios.get('/eventlists', {params:{}})
+        .then(response => {
+            //console.log("Test ",this.UserList)
 
+            response.data.forEach((element) => {
+                this.removeList.push( element.userId);
+                //console.log(element.babycard.id)
+                this.defaultEvents.push({
+                    id:element.id,
+                    data: {
+                        id:element.id,
+                        type:"event",
+                        title: element.title + "("+element.babycard.kidf+" "+element.babycard.kidi+")",
+                        color: element.color
+                    },
+                    schedule: {
+
+                        month: [element.month-1],
+                        dayOfMonth: [element.dayOfMonth],
+                        //duration: 1,
+                        //durationUnit: 'hour',
+
+                        times: [Time.parse(element.strtime)],
+
+                        // durationUnit: "hour",
+                        //times: [12],
+                        //minute:30,
+                        //hour:[30],
+                        duration: element.duration,
+                        durationUnit: element.durationUnit
+                    }
+                })
+            })
+
+            //console.log("Eventlists load");
+
+
+
+            //this.rebuild();
+            //console.log("eventlists",response.data);
+
+            //this.edit();
+        });
         this.loadData();
+        //this.loadData();
       //console.log("-->",typeof localStorage.getItem('login'), localStorage.getItem('login'))
       if(localStorage.getItem('login')){
 
@@ -209,20 +252,22 @@ export default {
 
         },
         clear () {
-        //this.$v.$reset()
-        this.login = ''
-        this.pass = ''
-        localStorage.removeItem(this.storeKey)
-        localStorage.setItem("login", '')
+            //this.$v.$reset()
+            this.login = ''
+            this.pass = ''
+            localStorage.removeItem(this.storeKey)
+            localStorage.setItem("login", '')
         },
+
         loadData(){
-            localStorage.removeItem("dayspanState")
+
             var d = new Date();
-            console.log("-----==",this.defaultEvents);
+            console.log("defaultEvents----",this.defaultEvents);
 
             axios.get('/users?visState_ne=false', {params:{}})
             .then(response => {
-
+                this.UserList = response.data;
+                //console.log(response.data)
                 response.data.forEach((element) => {
                     if (this.removeList.indexOf(element.id) == -1) {
 
@@ -254,52 +299,15 @@ export default {
                     }
 
                 })
-                console.log("Remove List",this.removeList)
+
+                // console.log("Remove List",this.removeList)
+                // this.loadState ();
                 this.loadState ();
             });
 
 
 
-            axios.get('/eventlists', {params:{}})
-            .then(response => {
 
-                response.data.forEach((element) => {
-                    this.removeList.push( element.userId);
-                    //console.log(element.babycard.id)
-                    this.defaultEvents.push({
-                        id:element.id,
-                        data: {
-                            id:element.id,
-                            type:"event",
-                            title: element.title + "("+element.babycard.kidf+" "+element.babycard.kidi+")",
-                            color: element.color
-                        },
-                        schedule: {
-
-                            month: [element.month-1],
-                            dayOfMonth: [element.dayOfMonth],
-                            //duration: 1,
-                            //durationUnit: 'hour',
-
-                            times: [Time.parse(element.strtime)],
-
-                            // durationUnit: "hour",
-                            //times: [12],
-                            //minute:30,
-                            //hour:[30],
-                            duration: element.duration,
-                            durationUnit: element.durationUnit
-                        }
-                    })
-                })
-
-                //console.log("Eventlists load");
-               // this.loadState ();
-                //this.rebuild();
-                //console.log("eventlists",response.data);
-
-                //this.edit();
-            });
         },
         getCalendarTime (calendarEvent) {
             let sa = calendarEvent.start.format('p')
@@ -321,6 +329,7 @@ export default {
             this.$refs.app.$forceUpdate()
         },
         saveState () {
+            localStorage.removeItem(this.storeKey)
             let state = this.calendar.toInput(true)
             let json = JSON.stringify(state)
             localStorage.setItem(this.storeKey, json)
@@ -341,7 +350,7 @@ export default {
                 state.events = this.defaultEvents
             }
 
-            //console.log("Load stale",this.defaultEvents)
+            //console.log("Load stale",state)
             this.$refs.app.setState(state)
         }
         }
