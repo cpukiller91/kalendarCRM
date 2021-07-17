@@ -232,8 +232,8 @@
                                         md="4"
                                     >
                                       <v-text-field
-                                          v-model="startDateForm"
-                                          label="Дата"
+                                          v-model="date"
+                                          label="Дата Рождения"
                                           prepend-icon="mdi-calendar"
 
                                       ></v-text-field>
@@ -1349,7 +1349,7 @@ export default {
         parentingattitude:null,
 
         agecategory:null,
-        //date: this.calendarEvent.start.format("Y-MM-DD"),
+        date: "",
         card:false,
         defect:false,
         famili:false,
@@ -1797,7 +1797,7 @@ export default {
               var data = {
                 Title:this.details.title,
                 otdelenije: this.Otdelenije,
-                date:this.startDateForm,
+                date:this.date,
 
                 kidf:this.kidf,
                 kidi:this.kidi,

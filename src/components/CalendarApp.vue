@@ -1375,7 +1375,7 @@ export default {
     this.drawer = this.navDrawer
   },
   data: vm => ({
-
+    age:"0л0м",
     datebf:null,
     menubf:null,
     dialogAllTask:false,
@@ -1701,7 +1701,7 @@ export default {
 
         otdelenije: this.Otdelenije,
         date:this.date,
-
+        age:this.age,
         kidf:this.kidf,
         kidi:this.kidi,
         kido:this.kido,
