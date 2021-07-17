@@ -1606,6 +1606,17 @@ export default {
     },
     methods:
         {
+          monthDiff() {
+            console.log("monthDiff==",new Date(this.date),this.date);
+            var dateFrom = new Date(this.date);
+            var dateTo = new Date();
+
+            var getMonth = dateTo.getMonth() - dateFrom.getMonth() + (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
+
+            this.age = Math.floor(getMonth  / 12)+"л"+getMonth  % 12+"м" ;
+            return Math.floor(getMonth  / 12)+"л"+getMonth  % 12+"м" ;
+          },
+
           saveDefect(){
             axios.post('/defectologs', {
               defIntel:this.defIntel,
@@ -1706,6 +1717,7 @@ export default {
 
               axios.get('/babycards/'+response.data[0].babycard.id,)
                 .then(resp => {
+
                   response = resp.data;
                   //console.log("babycards",response);
                   this.defectologs = response.defectologs;
@@ -1750,7 +1762,7 @@ export default {
                   this.tiajest = response.tiajest;
                   this.stadija = response.stadija;
                   this.psihozak = response.psihozak;
-
+                  this.monthDiff()
 
                 })
                 .catch(function (error) {
