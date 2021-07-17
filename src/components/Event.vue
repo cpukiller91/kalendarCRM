@@ -1584,6 +1584,7 @@ export default {
 
         var LoginData = JSON.parse(localStorage.getItem('login'));
         this.AddCard = LoginData.user.usergroup.addCard
+
         axios.get('/users', {params:{username:LoginData.user.username}})
         .then(response => {
           console.log("User load");
@@ -1691,16 +1692,17 @@ export default {
 
           reload(){
             axios.get('/eventlists/', {
-              params:{title:this.details.title,
-                month:this.month,
-                dayOfMonth:this.dayOfMonth}})
+              params:{
+                id:this.calendarEvent.event.data.id,
+                // month:this.month,
+                // dayOfMonth:this.dayOfMonth
+              }})
             .then(response => {
 
-              console.log("Card reload");
               this.babycardid = response.data[0].babycard.id;
+              console.log("babycards-->",response.data[0]);
 
 
-              console.log(response.data[0].babycard.id)
 
               axios.get('/babycards/'+response.data[0].babycard.id,)
                 .then(resp => {
