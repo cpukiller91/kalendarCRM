@@ -79,6 +79,9 @@
         "ThisMonth",
         "ThisYear"
       ]
+    },
+    "TypeHeaderColor": {
+      "type": "string"
     }
   }
 }
