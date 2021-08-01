@@ -1,0 +1,84 @@
+{
+  "kind": "collectionType",
+  "collectionName": "task_boards",
+  "info": {
+    "name": "TaskBoard",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "Status": {
+      "type": "enumeration",
+      "enum": [
+        "Onhold",
+        "Resolved",
+        "Closed",
+        "Dublicate",
+        "Invalid",
+        "Wontfix"
+      ]
+    },
+    "Revisions": {
+      "type": "integer"
+    },
+    "Priority": {
+      "type": "enumeration",
+      "enum": [
+        "HighestPriority",
+        "HighPriority",
+        "NormalPriority",
+        "LowPriority"
+      ]
+    },
+    "PublishAfterSave": {
+      "type": "boolean"
+    },
+    "AllowComments": {
+      "type": "boolean"
+    },
+    "AllowUsersToEditTheTask": {
+      "type": "boolean"
+    },
+    "UseTaskTimer": {
+      "type": "boolean"
+    },
+    "AttachedFiles": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "Task": {
+      "type": "richtext"
+    },
+    "comments": {
+      "collection": "comments",
+      "via": "task_board"
+    },
+    "ByDate": {
+      "type": "enumeration",
+      "enum": [
+        "ShowAll",
+        "Today",
+        "Yesterday",
+        "ThisWeek",
+        "ThisMonth",
+        "ThisYear"
+      ]
+    }
+  }
+}
