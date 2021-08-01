@@ -82,6 +82,9 @@
     },
     "TypeHeaderColor": {
       "type": "string"
+    },
+    "endDate": {
+      "type": "datetime"
     }
   }
 }
