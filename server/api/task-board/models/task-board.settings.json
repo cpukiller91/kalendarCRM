@@ -15,28 +15,8 @@
     "title": {
       "type": "string"
     },
-    "Status": {
-      "type": "enumeration",
-      "enum": [
-        "Onhold",
-        "Resolved",
-        "Closed",
-        "Dublicate",
-        "Invalid",
-        "Wontfix"
-      ]
-    },
     "Revisions": {
       "type": "integer"
-    },
-    "Priority": {
-      "type": "enumeration",
-      "enum": [
-        "HighestPriority",
-        "HighPriority",
-        "NormalPriority",
-        "LowPriority"
-      ]
     },
     "PublishAfterSave": {
       "type": "boolean"
@@ -69,22 +49,20 @@
       "collection": "comments",
       "via": "task_board"
     },
-    "ByDate": {
-      "type": "enumeration",
-      "enum": [
-        "ShowAll",
-        "Today",
-        "Yesterday",
-        "ThisWeek",
-        "ThisMonth",
-        "ThisYear"
-      ]
-    },
     "TypeHeaderColor": {
       "type": "string"
     },
     "endDate": {
       "type": "datetime"
+    },
+    "Status": {
+      "type": "string"
+    },
+    "Priority": {
+      "type": "string"
+    },
+    "ByDate": {
+      "type": "string"
     }
   }
 }
