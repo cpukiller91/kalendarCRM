@@ -51,6 +51,10 @@
       "plugin": "users-permissions",
       "collection": "user",
       "via": "task_board"
+    },
+    "project": {
+      "via": "task_boards",
+      "model": "project"
     }
   }
 }
