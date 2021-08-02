@@ -67,6 +67,10 @@
     },
     "visState": {
       "type": "boolean"
+    },
+    "task_board": {
+      "via": "otvetstvenni",
+      "model": "task-board"
     }
   }
 }

@@ -15,21 +15,6 @@
     "title": {
       "type": "string"
     },
-    "Revisions": {
-      "type": "integer"
-    },
-    "PublishAfterSave": {
-      "type": "boolean"
-    },
-    "AllowComments": {
-      "type": "boolean"
-    },
-    "AllowUsersToEditTheTask": {
-      "type": "boolean"
-    },
-    "UseTaskTimer": {
-      "type": "boolean"
-    },
     "AttachedFiles": {
       "collection": "file",
       "via": "related",
@@ -49,9 +34,6 @@
       "collection": "comments",
       "via": "task_board"
     },
-    "TypeHeaderColor": {
-      "type": "string"
-    },
     "endDate": {
       "type": "datetime"
     },
@@ -61,8 +43,14 @@
     "Priority": {
       "type": "string"
     },
-    "ByDate": {
-      "type": "string"
+    "postanovshik": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "otvetstvenni": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "task_board"
     }
   }
 }
