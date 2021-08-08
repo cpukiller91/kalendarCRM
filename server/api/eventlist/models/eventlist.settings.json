@@ -58,6 +58,10 @@
     },
     "userId": {
       "type": "integer"
+    },
+    "doctor": {
+      "plugin": "users-permissions",
+      "model": "user"
     }
   }
 }
