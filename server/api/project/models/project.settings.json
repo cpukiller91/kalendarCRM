@@ -22,7 +22,8 @@
     "boss": {
       "plugin": "users-permissions",
       "collection": "user",
-      "via": "project"
+      "via": "project",
+      "model": "user"
     },
     "description": {
       "type": "richtext"
