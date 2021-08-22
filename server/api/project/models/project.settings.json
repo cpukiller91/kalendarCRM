@@ -19,12 +19,6 @@
       "collection": "task-board",
       "via": "project"
     },
-    "boss": {
-      "plugin": "users-permissions",
-      "collection": "user",
-      "via": "project",
-      "model": "user"
-    },
     "description": {
       "type": "richtext"
     },
@@ -33,6 +27,11 @@
     },
     "endProject": {
       "type": "datetime"
+    },
+    "boss": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "projects"
     }
   }
 }
