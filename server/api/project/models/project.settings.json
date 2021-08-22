@@ -18,6 +18,20 @@
     "task_boards": {
       "collection": "task-board",
       "via": "project"
+    },
+    "boss": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "project"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "startProject": {
+      "type": "datetime"
+    },
+    "endProject": {
+      "type": "datetime"
     }
   }
 }

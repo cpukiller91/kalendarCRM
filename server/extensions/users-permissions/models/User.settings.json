@@ -71,6 +71,10 @@
     "task_board": {
       "via": "otvetstvenni",
       "model": "task-board"
+    },
+    "project": {
+      "via": "boss",
+      "model": "project"
     }
   }
 }
