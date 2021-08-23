@@ -71,6 +71,10 @@
     "projects": {
       "via": "boss",
       "collection": "project"
+    },
+    "task_board": {
+      "via": "otvetstvenni",
+      "model": "task-board"
     }
   }
 }

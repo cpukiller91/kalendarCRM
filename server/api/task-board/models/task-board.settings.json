@@ -55,8 +55,9 @@
       "model": "project"
     },
     "otvetstvenni": {
-      "model": "babycard",
-      "via": "task_board"
+      "model": "user",
+      "via": "task_board",
+      "plugin": "users-permissions"
     }
   }
 }
