@@ -16,8 +16,8 @@
       "type": "string"
     },
     "task_boards": {
-      "collection": "task-board",
-      "via": "project"
+      "via": "project",
+      "collection": "task-board"
     },
     "description": {
       "type": "richtext"

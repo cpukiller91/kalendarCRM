@@ -13,7 +13,8 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "AttachedFiles": {
       "collection": "file",
@@ -28,14 +29,16 @@
       "pluginOptions": {}
     },
     "Task": {
-      "type": "richtext"
+      "type": "richtext",
+      "required": true
     },
     "comments": {
       "collection": "comments",
       "via": "task_board"
     },
     "endDate": {
-      "type": "datetime"
+      "type": "datetime",
+      "required": true
     },
     "Status": {
       "type": "string"
@@ -47,14 +50,13 @@
       "plugin": "users-permissions",
       "model": "user"
     },
-    "otvetstvenni": {
-      "plugin": "users-permissions",
-      "collection": "user",
-      "via": "task_board"
-    },
     "project": {
       "via": "task_boards",
       "model": "project"
+    },
+    "otvetstvenni": {
+      "model": "babycard",
+      "via": "task_board"
     }
   }
 }

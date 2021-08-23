@@ -68,13 +68,9 @@
     "visState": {
       "type": "boolean"
     },
-    "task_board": {
-      "via": "otvetstvenni",
-      "model": "task-board"
-    },
-    "project": {
+    "projects": {
       "via": "boss",
-      "model": "project"
+      "collection": "project"
     }
   }
 }

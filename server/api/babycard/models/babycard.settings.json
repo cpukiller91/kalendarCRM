@@ -130,6 +130,10 @@
     },
     "sikrange": {
       "type": "string"
+    },
+    "task_board": {
+      "via": "otvetstvenni",
+      "model": "task-board"
     }
   }
 }
