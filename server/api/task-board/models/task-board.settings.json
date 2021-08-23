@@ -16,25 +16,13 @@
       "type": "string",
       "required": true
     },
-    "AttachedFiles": {
-      "collection": "file",
-      "via": "related",
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos"
-      ],
-      "plugin": "upload",
-      "required": false,
-      "pluginOptions": {}
-    },
     "Task": {
       "type": "richtext",
       "required": true
     },
     "comments": {
-      "collection": "comments",
-      "via": "task_board"
+      "via": "task_board",
+      "collection": "comments"
     },
     "endDate": {
       "type": "datetime",

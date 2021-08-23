@@ -25,6 +25,18 @@
     "task_board": {
       "via": "comments",
       "model": "task-board"
+    },
+    "AttachedFiles": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
     }
   }
 }
