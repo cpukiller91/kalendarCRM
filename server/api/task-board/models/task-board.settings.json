@@ -46,6 +46,10 @@
       "model": "user",
       "via": "task_board",
       "plugin": "users-permissions"
+    },
+    "reminders": {
+      "via": "task_board",
+      "collection": "reminders"
     }
   }
 }

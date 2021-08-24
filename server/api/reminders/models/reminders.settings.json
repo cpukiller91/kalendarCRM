@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "reminders",
+  "info": {
+    "name": "reminders"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "reminderDate": {
+      "type": "datetime"
+    },
+    "task_board": {
+      "model": "task-board",
+      "via": "reminders"
+    }
+  }
+}
