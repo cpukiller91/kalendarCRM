@@ -24,10 +24,6 @@
       "via": "task_board",
       "collection": "comments"
     },
-    "endDate": {
-      "type": "datetime",
-      "required": true
-    },
     "Status": {
       "type": "string"
     },
@@ -50,6 +46,12 @@
     "reminders": {
       "via": "task_board",
       "collection": "reminders"
+    },
+    "startDate": {
+      "type": "date"
+    },
+    "duration": {
+      "type": "integer"
     }
   }
 }

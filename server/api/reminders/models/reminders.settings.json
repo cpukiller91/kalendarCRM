@@ -15,8 +15,8 @@
       "type": "datetime"
     },
     "task_board": {
-      "model": "task-board",
-      "via": "reminders"
+      "via": "reminders",
+      "model": "task-board"
     }
   }
 }
