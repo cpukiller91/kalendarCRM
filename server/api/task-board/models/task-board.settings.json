@@ -40,7 +40,6 @@
     },
     "otvetstvenni": {
       "model": "user",
-      "via": "task_board",
       "plugin": "users-permissions"
     },
     "reminders": {
