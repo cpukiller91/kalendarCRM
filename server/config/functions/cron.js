@@ -19,7 +19,7 @@ module.exports = {
   // '0 1 * * 1': () => {
   //
   // }
-  '*/10 * * * * *': async (ctx) => {
+  '* */1 * * *': async (ctx) => {
     //var reminders = await strapi.services.reminders.find();
     var curentDate = dayjs(new Date()).format("YYYY-MM-DD");
 
@@ -46,16 +46,29 @@ module.exports = {
           postanovshik.username,
           postanovshik.email);
 
-        // await strapi.plugins['email'].services.email.send({
-        //   to: 'cpukiller1991@gmail.com',
-        //   from: 'joelrobuchon@strapi.io',
-        //   // cc: 'helenedarroze@strapi.io',
-        //   // bcc: 'ghislainearabian@strapi.io',
-        //   // replyTo: 'annesophiepic@strapi.io',
-        //   subject: 'Use strapi email provider successfully',
-        //   text: 'Hello world!',
-        //   html: 'Hello world!',
-        // });
+        var email = await strapi.plugins['email'].services.email.send({
+          to:  otvetstvenni.email,
+          //from: 'admin@admi.cdmc.ru',
+          // cc: 'helenedarroze@strapi.io',
+          // bcc: 'ghislainearabian@strapi.io',
+          // replyTo: 'annesophiepic@strapi.io',
+          subject: 'Напоминалка исполнителю',
+          text: 'Hello world!',
+          html: 'Hello world!',
+        });
+
+        var email1 = await strapi.plugins['email'].services.email.send({
+          to: postanovshik.email,
+          //from: 'admin@admi.cdmc.ru',
+          // cc: 'helenedarroze@strapi.io',
+          // bcc: 'ghislainearabian@strapi.io',
+          // replyTo: 'annesophiepic@strapi.io',
+          subject: 'Напоминалка постановщику',
+          text: 'Hello world!',
+          html: 'Hello world!',
+        });
+        var deleteReminder = await strapi.query('reminders').delete({id:Reminder.id})
+        console.log("del rem",deleteReminder,"email",email)
       }
     })
 
