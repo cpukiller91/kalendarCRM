@@ -62,6 +62,9 @@
     "doctor": {
       "plugin": "users-permissions",
       "model": "user"
+    },
+    "groupUser": {
+      "type": "richtext"
     }
   }
 }
